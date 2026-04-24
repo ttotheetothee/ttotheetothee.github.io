@@ -14,3 +14,15 @@ h1 {
 p {
   font-size: 18px;
 }
+.hero {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.tagline {
+  font-size: 20px;
+  color: #555555;
+  line-height: 1.6;
+  max-width: 650px;
+}
