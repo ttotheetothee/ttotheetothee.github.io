@@ -26,3 +26,14 @@ p {
   line-height: 1.6;
   max-width: 650px;
 }
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 20px;
+  border-top: 1px solid #dddddd;
+}
+
+h2 {
+  font-size: 28px;
+  color: #1a1a2e;
+}
