@@ -37,3 +37,17 @@ h2 {
   font-size: 28px;
   color: #1a1a2e;
 }
+.skills-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.skill-item {
+  background-color: #1a1a2e;
+  color: #ffffff;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 14px;
+}
