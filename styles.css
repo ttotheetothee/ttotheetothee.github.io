@@ -79,3 +79,28 @@ h2 {
 .hero {
   padding-top: 140px;
 }
+
+.footer {
+  background-color: #1a1a2e;
+  color: #ffffff;
+  text-align: center;
+  padding: 30px;
+  margin-top: 80px;
+  font-size: 14px;
+}
+
+.finding {
+  margin-bottom: 32px;
+}
+
+.finding h3 {
+  color: #1a1a2e;
+  font-size: 20px;
+  margin-bottom: 8px;
+}
+
+.case-context {
+  color: #555555;
+  font-style: italic;
+  margin-bottom: 40px;
+}
