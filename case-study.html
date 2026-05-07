@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Superstore — Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0e0f11; --surface: #16181c; --surface2: #1e2128;
+    --border: rgba(255,255,255,0.07); --border2: rgba(255,255,255,0.12);
+    --text: #e8e6e0; --muted: #7a7870; --subtle: #3a3d45;
+    --accent: #c8a96e; --accent2: #7eb8a4;
+    --red: #e05c5c; --amber: #d4924a; --green: #6aab7e; --blue: #5b8fd4;
+    --red-bg: rgba(224,92,92,0.08); --amber-bg: rgba(212,146,74,0.08);
+    --green-bg: rgba(106,171,126,0.08); --blue-bg: rgba(91,143,212,0.08);
+  }
+
+  body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 48px 24px; }
+  .page { max-width: 860px; margin: 0 auto; }
+
+  /* HEADER */
+  .header { margin-bottom: 48px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+  .eyebrow { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; margin-bottom: 12px; }
+  .title { font-family: 'DM Serif Display', serif; font-size: 42px; font-weight: 400; line-height: 1.15; color: var(--text); margin-bottom: 8px; }
+  .subtitle { font-size: 15px; color: var(--muted); font-weight: 300; }
+  .meta { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+  .meta-item { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+  .meta-item span { color: var(--accent2); }
+
+  /* SECTION LABEL */
+  .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+  /* THINKING PROCESS TIMELINE */
+  .process { margin-bottom: 48px; display: flex; flex-direction: column; gap: 0; }
+  .process-step { display: flex; gap: 20px; position: relative; }
+  .process-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 36px;
+    bottom: -12px;
+    width: 1px;
+    background: var(--border2);
+  }
+  .step-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--border2);
+    background: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .step-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+    margin-bottom: 12px;
+    flex: 1;
+  }
+  .step-content:hover { border-color: var(--border2); }
+  .step-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .step-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .step-body {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+  .step-body strong { color: var(--text); font-weight: 500; }
+
+  /* KPI */
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px; margin-bottom: 40px; }
+  .kpi { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; position: relative; overflow: hidden; }
+  .kpi::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--subtle); }
+  .kpi.warn::before { background: var(--amber); }
+  .kpi.danger::before { background: var(--red); }
+  .kpi.good::before { background: var(--green); }
+  .kpi-val { font-size: 26px; font-weight: 600; line-height: 1.1; margin-bottom: 4px; }
+  .kpi.warn .kpi-val { color: var(--amber); }
+  .kpi.danger .kpi-val { color: var(--red); }
+  .kpi.good .kpi-val { color: var(--green); }
+  .kpi-label { font-size: 11px; color: var(--muted); font-weight: 400; line-height: 1.4; }
+
+  /* NARRATIVE */
+  .narrative { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px 32px; margin-bottom: 40px; position: relative; }
+  .narrative::before { content: '\201C'; font-family: 'DM Serif Display', serif; font-size: 80px; color: var(--subtle); position: absolute; top: -8px; left: 20px; line-height: 1; }
+  .narrative-text { font-size: 14px; color: var(--text); line-height: 1.85; font-weight: 300; padding-left: 16px; }
+  .narrative-text strong { color: var(--accent); font-weight: 500; }
+
+  /* MARGIN VISUAL */
+  .margin-chart { margin-bottom: 40px; display: flex; flex-direction: column; gap: 10px; }
+  .margin-row { display: flex; align-items: center; gap: 14px; }
+  .margin-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); width: 120px; text-align: right; flex-shrink: 0; }
+  .margin-track { flex: 1; height: 32px; background: var(--surface2); border-radius: 6px; overflow: hidden; position: relative; }
+  .margin-fill {
+    height: 100%;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    white-space: nowrap;
+    animation: grow 1.2s ease forwards;
+    min-width: 60px;
+  }
+  @keyframes grow { from { width: 0 !important; opacity: 0; } }
+  .fill-green { background: rgba(106,171,126,0.25); color: var(--green); }
+  .fill-amber { background: rgba(212,146,74,0.2); color: var(--amber); }
+  .fill-red { background: rgba(224,92,92,0.2); color: var(--red); }
+  .margin-note { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 8px; }
+
+  /* FINDINGS */
+  .findings { margin-bottom: 40px; display: flex; flex-direction: column; gap: 10px; }
+  .finding { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; display: flex; gap: 16px; align-items: flex-start; transition: border-color 0.2s; }
+  .finding:hover { border-color: var(--border2); }
+  .finding.critical { border-left: 3px solid var(--red); }
+  .finding.monitor { border-left: 3px solid var(--amber); }
+  .finding.opportunity { border-left: 3px solid var(--green); }
+  .finding.investigate { border-left: 3px solid var(--blue); }
+  .badge { font-family: 'DM Mono', monospace; font-size: 10px; font-weight: 500; letter-spacing: 0.06em; padding: 3px 10px; border-radius: 20px; white-space: nowrap; margin-top: 2px; }
+  .badge-red { background: var(--red-bg); color: var(--red); border: 1px solid rgba(224,92,92,0.2); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid rgba(212,146,74,0.2); }
+  .badge-green { background: var(--green-bg); color: var(--green); border: 1px solid rgba(106,171,126,0.2); }
+  .badge-blue { background: var(--blue-bg); color: var(--blue); border: 1px solid rgba(91,143,212,0.2); }
+  .finding-body { flex: 1; }
+  .finding-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .finding-sub { font-size: 12px; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+  .finding-rec { font-size: 12px; color: var(--text); border-left: 2px solid var(--subtle); padding-left: 10px; line-height: 1.5; }
+
+  /* FORECAST */
+  .forecast { margin-bottom: 40px; }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .bar-year { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); width: 36px; text-align: right; }
+  .bar-track { flex: 1; height: 28px; background: var(--surface2); border-radius: 6px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; display: flex; align-items: center; padding: 0 10px; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; white-space: nowrap; animation: grow 1s ease forwards; }
+  .actual { background: rgba(91,143,212,0.2); color: var(--blue); }
+  .forecast-bar { background: rgba(212,146,74,0.2); color: var(--amber); }
+  .forecast-note { font-size: 11px; color: var(--muted); margin-top: 8px; font-style: italic; }
+
+  /* METHODS */
+  .methods { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; margin-bottom: 40px; }
+  .method { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; }
+  .method-title { font-size: 12px; font-weight: 500; color: var(--accent2); margin-bottom: 4px; }
+  .method-desc { font-size: 11px; color: var(--muted); line-height: 1.4; }
+
+  /* FOOTER */
+  .footer { border-top: 1px solid var(--border); padding-top: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  .footer span { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
+  .back-link { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; opacity: 0.8; }
+  .back-link:hover { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="index.html" class="back-link">← Back to portfolio</a>
+
+  <div class="header">
+    <p class="eyebrow">Consulting analyst project · Phase 1–4 summary</p>
+    <h1 class="title">Superstore<br>Profitability Case</h1>
+    <p class="subtitle">Profitability framework · Market share analysis · 2014–2017 dataset</p>
+    <div class="meta">
+      <div class="meta-item">Dataset <span>9,994 transactions</span></div>
+      <div class="meta-item">Period <span>2014 – 2017</span></div>
+      <div class="meta-item">Categories <span>Furniture · Office Supplies · Technology</span></div>
+      <div class="meta-item">Regions <span>Central · East · South · West</span></div>
+    </div>
+  </div>
+
+  <!-- THINKING PROCESS -->
+  <p class="section-label">How the problem was structured</p>
+  <div class="process">
+
+    <div class="process-step">
+      <div class="step-marker">
+        <div class="step-dot">01</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The signal</p>
+        <p class="step-title">Profit was the entry point — not a hypothesis</p>
+        <p class="step-body">There was no predefined thesis walking in. The signal was simple: <strong>profit was under pressure</strong>. Not a crisis on the surface, but enough compression to warrant a structured look. The starting question wasn't fully formed — it was only: <strong>are we actually making money?</strong></p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-marker">
+        <div class="step-dot">02</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">Structuring the problem</p>
+        <p class="step-title">Start at the top line, then drill</p>
+        <p class="step-body">The approach was to establish the overall picture first — <strong>revenue, profit, margin</strong> — before going deeper. A business can look healthy on revenue while bleeding on margin. Confirming the top-line health first meant any subsequent finding would be grounded in context, not isolated noise.</p>
+      </div>
+    </div>
+
+    <div class="process-step">
+      <div class="step-marker">
+        <div class="step-dot">03</div>
+      </div>
+      <div class="step-content">
+        <p class="step-tag">The surprise</p>
+        <p class="step-title">Products selling at a net loss — at scale</p>
+        <p class="step-body">Drilling into categories revealed something that reframed the entire problem. Certain products weren't just underperforming — <strong>they were being sold at a net loss</strong>. Not a few outliers. Enough volume to be material. That shifted the diagnosis: this isn't a revenue problem. It's a <strong>pricing and discount problem hiding inside a growing business</strong>.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- KEY METRICS -->
+  <p class="section-label">Key metrics</p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">$2.30M</div><div class="kpi-label">Total sales 2014–2017</div></div>
+    <div class="kpi"><div class="kpi-val">$286K</div><div class="kpi-label">Total profit</div></div>
+    <div class="kpi warn"><div class="kpi-val">12.47%</div><div class="kpi-label">Overall margin — thin for retail</div></div>
+    <div class="kpi danger"><div class="kpi-val">1,871</div><div class="kpi-label">Loss-making transactions (18.7%)</div></div>
+    <div class="kpi good"><div class="kpi-val">$796K</div><div class="kpi-label">2018 forecast sales</div></div>
+  </div>
+
+  <!-- EXECUTIVE NARRATIVE -->
+  <p class="section-label">Executive narrative</p>
+  <div class="narrative">
+    <p class="narrative-text">
+      Superstore is a <strong>growing business with a margin problem</strong>. Sales have increased steadily from $484K in 2014 to $733K in 2017, yet overall margin remains compressed at 12.47%. The primary driver of margin erosion is the <strong>Furniture category</strong>, operating at just 2.5% margin — seven times below its peers — largely due to Tables running at <strong>-8.6% margin</strong> on $207K of sales. Simultaneously, Binders in Office Supplies are being discounted at 37%, surrendering profit on a product that remains viable even at lower discount rates. The <strong>West region</strong> is the clear growth engine, expanding from 30.5% to 34.1% share. The business requires an immediate pricing and discount strategy review before sustained growth masks the underlying margin erosion.
+    </p>
+  </div>
+
+  <!-- MARGIN BREAKDOWN -->
+  <p class="section-label">Margin by category</p>
+  <div class="margin-chart">
+    <div class="margin-row">
+      <span class="margin-label">Technology</span>
+      <div class="margin-track"><div class="margin-fill fill-green" style="width: 100%">18.4% margin</div></div>
+    </div>
+    <div class="margin-row">
+      <span class="margin-label">Office Supplies</span>
+      <div class="margin-track"><div class="margin-fill fill-green" style="width: 82%">17.0% margin</div></div>
+    </div>
+    <div class="margin-row">
+      <span class="margin-label">Overall</span>
+      <div class="margin-track"><div class="margin-fill fill-amber" style="width: 60%">12.5% margin</div></div>
+    </div>
+    <div class="margin-row">
+      <span class="margin-label">Furniture</span>
+      <div class="margin-track"><div class="margin-fill fill-red" style="width: 13%">2.5% margin</div></div>
+    </div>
+    <div class="margin-row">
+      <span class="margin-label">Bookcases</span>
+      <div class="margin-track"><div class="margin-fill fill-red" style="width: 6%">-3.0%</div></div>
+    </div>
+    <div class="margin-row">
+      <span class="margin-label">Tables</span>
+      <div class="margin-track"><div class="margin-fill fill-red" style="width: 4%">-8.6%</div></div>
+    </div>
+    <p class="margin-note">Furniture sub-categories drag the overall margin — Tables and Bookcases are loss-making at current discount rates.</p>
+  </div>
+
+  <!-- FINDINGS -->
+  <p class="section-label">Findings & recommendations</p>
+  <div class="findings">
+    <div class="finding critical">
+      <span class="badge badge-red">Critical</span>
+      <div class="finding-body">
+        <p class="finding-title">Tables operating at -8.6% margin on $207K in sales</p>
+        <p class="finding-sub">Highest discount rate across all sub-categories at 26%. Every unit sold generates a net loss — at this volume, the drag on overall profitability is material.</p>
+        <p class="finding-rec">Conduct immediate pricing review on Tables. Evaluate whether the discount policy is commercially justified or a structural pricing error.</p>
+      </div>
+    </div>
+    <div class="finding critical">
+      <span class="badge badge-red">Critical</span>
+      <div class="finding-body">
+        <p class="finding-title">Bookcases operating at -3.0% margin</p>
+        <p class="finding-sub">Secondary loss-maker compounding Furniture's overall 2.5% margin — category is running 7x below Technology and Office Supplies peers.</p>
+        <p class="finding-rec">Bundle pricing review alongside Tables. Assess whether discontinuation or repricing delivers greater margin recovery.</p>
+      </div>
+    </div>
+    <div class="finding monitor">
+      <span class="badge badge-amber">Monitor</span>
+      <div class="finding-body">
+        <p class="finding-title">Binders discounted at 37% average — highest in Office Supplies</p>
+        <p class="finding-sub">Product remains profitable at 14.9% margin despite heavy discounting. Profit is being surrendered on a high-volume product unnecessarily.</p>
+        <p class="finding-rec">Reduce Binders discount incrementally. A 10-point reduction could materially improve Office Supplies margin with limited volume risk.</p>
+      </div>
+    </div>
+    <div class="finding opportunity">
+      <span class="badge badge-green">Opportunity</span>
+      <div class="finding-body">
+        <p class="finding-title">West region growing from 30.5% to 34.1% share over four years</p>
+        <p class="finding-sub">Strongest and most consistent growth trajectory across all four regions. Represents the business's primary organic growth engine.</p>
+        <p class="finding-rec">Prioritize inventory, marketing, and sales resource allocation toward the West region to sustain and accelerate momentum.</p>
+      </div>
+    </div>
+    <div class="finding investigate">
+      <span class="badge badge-blue">Investigate</span>
+      <div class="finding-body">
+        <p class="finding-title">South Technology volume collapsed 68% in 2015, margin preserved</p>
+        <p class="finding-sub">Revenue compression without margin deterioration signals a volume problem, not an efficiency problem. Root cause remains unresolved.</p>
+        <p class="finding-rec">Investigate whether the collapse was structural or situational before drawing strategic conclusions about the South region.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- FORECAST -->
+  <p class="section-label">2018 sales forecast</p>
+  <div class="forecast">
+    <div class="bar-row"><span class="bar-year">2014</span><div class="bar-track"><div class="bar-fill actual" style="width:66%">$484K</div></div></div>
+    <div class="bar-row"><span class="bar-year">2015</span><div class="bar-track"><div class="bar-fill actual" style="width:64%">$471K</div></div></div>
+    <div class="bar-row"><span class="bar-year">2016</span><div class="bar-track"><div class="bar-fill actual" style="width:83%">$609K</div></div></div>
+    <div class="bar-row"><span class="bar-year">2017</span><div class="bar-track"><div class="bar-fill actual" style="width:100%">$733K</div></div></div>
+    <div class="bar-row"><span class="bar-year">2018</span><div class="bar-track"><div class="bar-fill forecast-bar" style="width:100%">$796K — linear regression forecast</div></div></div>
+    <p class="forecast-note">Assumes no repeat of South regional volatility and no material change in discount policy or product mix.</p>
+  </div>
+
+  <!-- METHODS -->
+  <p class="section-label">Methods used</p>
+  <div class="methods">
+    <div class="method"><p class="method-title">Profitability framework</p><p class="method-desc">Revenue → margin → category and sub-category drill-down</p></div>
+    <div class="method"><p class="method-title">Market share analysis</p><p class="method-desc">Regional share shift calculated via pivot table year over year</p></div>
+    <div class="method"><p class="method-title">Discount leakage analysis</p><p class="method-desc">Average discount vs margin mapped across all sub-categories</p></div>
+    <div class="method"><p class="method-title">Linear regression</p><p class="method-desc">2018 sales forecast using sklearn on 2014–2017 yearly totals</p></div>
+    <div class="method"><p class="method-title">Power BI dashboard</p><p class="method-desc">Interactive visuals with DAX measures and year slicer</p></div>
+    <div class="method"><p class="method-title">Python — pandas, matplotlib</p><p class="method-desc">Data cleaning, aggregation, feature engineering, visualization</p></div>
+  </div>
+
+  <div class="footer">
+    <span>Superstore Sales Dataset · Kaggle · 9,994 rows · 21 columns</span>
+    <span>Consulting Analyst Self-Study Project</span>
+  </div>
+
+</div>
+</body>
+</html>
