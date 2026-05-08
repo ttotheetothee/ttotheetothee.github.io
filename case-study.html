@@ -180,6 +180,67 @@
   .footer span { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); }
   .back-link { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); text-decoration: none; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 32px; opacity: 0.8; }
   .back-link:hover { opacity: 1; }
+
+  /* CHARTS */
+  .chart-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 28px 28px 20px; margin-bottom: 40px; }
+  .chart-title { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+  .chart-subtitle { font-size: 13px; color: var(--text); font-weight: 300; margin-bottom: 24px; }
+  .chart-caption { font-size: 11px; color: var(--muted); font-style: italic; margin-top: 16px; }
+
+  /* DISCOUNT SCATTER */
+  .scatter-grid { position: relative; width: 100%; height: 280px; border-left: 1px solid var(--border2); border-bottom: 1px solid var(--border2); margin-top: 16px; }
+  .scatter-x-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); text-align: center; margin-top: 8px; }
+  .scatter-y-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); position: absolute; left: -48px; top: 50%; transform: translateY(-50%) rotate(-90deg); white-space: nowrap; }
+  .scatter-outer { position: relative; padding-left: 52px; margin-bottom: 8px; }
+  .dot {
+    position: absolute;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: default;
+    transition: transform 0.2s;
+  }
+  .dot:hover { transform: scale(1.15); }
+  .dot-label {
+    position: absolute;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .axis-tick { font-family: 'DM Mono', monospace; font-size: 9px; color: var(--muted); position: absolute; }
+
+  /* REGIONAL DONUT ROWS */
+  .region-rows { display: flex; flex-direction: column; gap: 14px; }
+  .region-row { display: flex; align-items: center; gap: 14px; }
+  .region-name { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); width: 56px; flex-shrink: 0; }
+  .region-track { flex: 1; height: 10px; background: var(--surface2); border-radius: 10px; overflow: visible; position: relative; }
+  .region-bar-14 { height: 10px; border-radius: 10px; background: rgba(91,143,212,0.3); animation: grow 1s ease forwards; position: absolute; top: 0; left: 0; }
+  .region-bar-17 { height: 10px; border-radius: 10px; position: absolute; top: 0; left: 0; animation: grow 1.3s ease forwards; }
+  .region-pct { font-family: 'DM Mono', monospace; font-size: 10px; width: 80px; flex-shrink: 0; }
+  .region-legend { display: flex; gap: 20px; margin-bottom: 20px; }
+  .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+  .legend-item { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--muted); display: flex; align-items: center; }
+
+  /* SALES TREND LINE */
+  .trend-wrap { position: relative; width: 100%; }
+  svg.trend-svg { width: 100%; overflow: visible; }
+  .trend-line { fill: none; stroke: var(--accent2); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .trend-line-forecast { fill: none; stroke: var(--amber); stroke-width: 2; stroke-dasharray: 6 4; stroke-linecap: round; }
+  .trend-area { fill: url(#areaGrad); }
+  .trend-dot { fill: var(--accent2); }
+  .trend-dot-forecast { fill: var(--amber); }
+  .trend-label { font-family: 'DM Mono', monospace; font-size: 10px; fill: var(--text); }
+  .trend-year { font-family: 'DM Mono', monospace; font-size: 10px; fill: var(--muted); }
+  .trend-gridline { stroke: var(--border); stroke-width: 1; }
+
+  /* TOOLS STRIP */
+  .tools-strip { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+  .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; flex: 1; min-width: 160px; }
+  .tool-icon { font-size: 20px; margin-bottom: 8px; }
+  .tool-name { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 4px; }
+  .tool-role { font-size: 11px; color: var(--muted); line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -204,35 +265,26 @@
   <div class="process">
 
     <div class="process-step">
-      <div class="step-marker">
-        <div class="step-dot">01</div>
-      </div>
+      <div class="step-marker"><div class="step-dot">01</div></div>
       <div class="step-content">
         <p class="step-tag">The signal</p>
-        <p class="step-title">Profit was the entry point — not a hypothesis</p>
-        <p class="step-body">There was no predefined thesis walking in. The signal was simple: <strong>profit was under pressure</strong>. Not a crisis on the surface, but enough compression to warrant a structured look. The starting question wasn't fully formed — it was only: <strong>are we actually making money?</strong></p>
+        <p class="step-body">Profit was under pressure — no predefined thesis, just one question: <strong>are we actually making money?</strong></p>
       </div>
     </div>
 
     <div class="process-step">
-      <div class="step-marker">
-        <div class="step-dot">02</div>
-      </div>
+      <div class="step-marker"><div class="step-dot">02</div></div>
       <div class="step-content">
-        <p class="step-tag">Structuring the problem</p>
-        <p class="step-title">Start at the top line, then drill</p>
-        <p class="step-body">The approach was to establish the overall picture first — <strong>revenue, profit, margin</strong> — before going deeper. A business can look healthy on revenue while bleeding on margin. Confirming the top-line health first meant any subsequent finding would be grounded in context, not isolated noise.</p>
+        <p class="step-tag">The structure</p>
+        <p class="step-body">Start at the top line — <strong>revenue, profit, margin</strong> — then drill into categories to find where the drag was coming from.</p>
       </div>
     </div>
 
     <div class="process-step">
-      <div class="step-marker">
-        <div class="step-dot">03</div>
-      </div>
+      <div class="step-marker"><div class="step-dot">03</div></div>
       <div class="step-content">
-        <p class="step-tag">The surprise</p>
-        <p class="step-title">Products selling at a net loss — at scale</p>
-        <p class="step-body">Drilling into categories revealed something that reframed the entire problem. Certain products weren't just underperforming — <strong>they were being sold at a net loss</strong>. Not a few outliers. Enough volume to be material. That shifted the diagnosis: this isn't a revenue problem. It's a <strong>pricing and discount problem hiding inside a growing business</strong>.</p>
+        <p class="step-tag">The discovery</p>
+        <p class="step-body">Certain products were being sold at a <strong>net loss at scale</strong> — not a revenue problem, but a pricing and discount problem hiding inside a growing business.</p>
       </div>
     </div>
 
@@ -286,7 +338,191 @@
     <p class="margin-note">Furniture sub-categories drag the overall margin — Tables and Bookcases are loss-making at current discount rates.</p>
   </div>
 
-  <!-- FINDINGS -->
+  <!-- CHART 1: DISCOUNT VS MARGIN SCATTER -->
+  <p class="section-label">Discount rate vs margin — sub-category view</p>
+  <div class="chart-wrap">
+    <p class="chart-title">Scatter analysis</p>
+    <p class="chart-subtitle">Higher discounts don't always mean more sales — they often just mean less profit</p>
+    <div class="scatter-outer">
+      <span class="scatter-y-label">Margin %</span>
+      <div class="scatter-grid" id="scatter">
+        <!-- Y axis ticks -->
+        <span class="axis-tick" style="left:-28px; top:4px">+20%</span>
+        <span class="axis-tick" style="left:-28px; top:30%">+10%</span>
+        <span class="axis-tick" style="left:-28px; top:57%">0%</span>
+        <span class="axis-tick" style="left:-28px; top:78%">-8%</span>
+        <!-- Gridlines -->
+        <div style="position:absolute;top:57%;left:0;right:0;height:1px;background:rgba(224,92,92,0.2);"></div>
+
+        <!-- DOTS: left% = discount axis (0-40%), bottom% = margin axis (-10 to +22) -->
+        <!-- Technology: 15% disc, 18.4% margin -->
+        <div class="dot" style="width:18px;height:18px;background:rgba(91,143,212,0.7);left:37%;bottom:88%;border:1px solid var(--blue);">
+          <span class="dot-label" style="top:-18px;left:4px;color:var(--blue);">Tech</span>
+        </div>
+        <!-- Office Supplies: 17% disc, 17% margin -->
+        <div class="dot" style="width:18px;height:18px;background:rgba(91,143,212,0.7);left:42%;bottom:83%;border:1px solid var(--blue);">
+          <span class="dot-label" style="top:-18px;left:4px;color:var(--blue);">O.Supplies</span>
+        </div>
+        <!-- Binders: 37% disc, 14.9% margin -->
+        <div class="dot" style="width:16px;height:16px;background:rgba(212,146,74,0.7);left:92%;bottom:77%;border:1px solid var(--amber);">
+          <span class="dot-label" style="top:-18px;right:0;color:var(--amber);">Binders</span>
+        </div>
+        <!-- Chairs: 18% disc, 14.2% margin -->
+        <div class="dot" style="width:16px;height:16px;background:rgba(106,171,126,0.6);left:45%;bottom:74%;border:1px solid var(--green);">
+          <span class="dot-label" style="top:20px;left:4px;color:var(--green);">Chairs</span>
+        </div>
+        <!-- Phones: 12% disc, 16.8% margin -->
+        <div class="dot" style="width:16px;height:16px;background:rgba(91,143,212,0.6);left:30%;bottom:81%;border:1px solid var(--blue);">
+          <span class="dot-label" style="top:20px;left:4px;color:var(--blue);">Phones</span>
+        </div>
+        <!-- Bookcases: 20% disc, -3% margin -->
+        <div class="dot" style="width:16px;height:16px;background:rgba(224,92,92,0.8);left:50%;bottom:44%;border:1px solid var(--red);">
+          <span class="dot-label" style="top:20px;left:4px;color:var(--red);">Bookcases</span>
+        </div>
+        <!-- Tables: 26% disc, -8.6% margin -->
+        <div class="dot" style="width:22px;height:22px;background:rgba(224,92,92,0.9);left:65%;bottom:30%;border:2px solid var(--red);">
+          <span class="dot-label" style="top:24px;left:-8px;color:var(--red);font-weight:500;">Tables ⚠</span>
+        </div>
+        <!-- X axis ticks -->
+        <span class="axis-tick" style="bottom:-20px;left:0%">0%</span>
+        <span class="axis-tick" style="bottom:-20px;left:25%">10%</span>
+        <span class="axis-tick" style="bottom:-20px;left:50%">20%</span>
+        <span class="axis-tick" style="bottom:-20px;left:75%">30%</span>
+        <span class="axis-tick" style="bottom:-20px;left:95%">40%</span>
+      </div>
+    </div>
+    <p class="scatter-x-label" style="padding-left:52px;">Discount Rate %</p>
+    <p class="chart-caption">Tables sit in the danger zone — high discount, negative margin. Binders show unnecessary profit leakage despite remaining profitable.</p>
+  </div>
+
+  <!-- CHART 2: REGIONAL SHARE SHIFT -->
+  <p class="section-label">Regional market share shift — 2014 vs 2017</p>
+  <div class="chart-wrap">
+    <p class="chart-title">Share analysis</p>
+    <p class="chart-subtitle">West is gaining ground. South is quietly shrinking.</p>
+    <div class="region-legend">
+      <span class="legend-item"><span class="legend-dot" style="background:rgba(91,143,212,0.5)"></span>2014</span>
+      <span class="legend-item"><span class="legend-dot" style="background:var(--accent2)"></span>2017</span>
+    </div>
+    <div class="region-rows">
+      <!-- West: 30.5% → 34.1% -->
+      <div class="region-row">
+        <span class="region-name">West</span>
+        <div class="region-track" style="height:20px;">
+          <div class="region-bar-14" style="width:30.5%;height:20px;"></div>
+          <div class="region-bar-17" style="width:34.1%;height:20px;background:rgba(126,184,164,0.7);"></div>
+        </div>
+        <span class="region-pct" style="color:var(--green);font-family:'DM Mono',monospace;font-size:11px;">30.5% → 34.1% ↑</span>
+      </div>
+      <!-- East: 29.5% → 28.9% -->
+      <div class="region-row">
+        <span class="region-name">East</span>
+        <div class="region-track" style="height:20px;">
+          <div class="region-bar-14" style="width:29.5%;height:20px;"></div>
+          <div class="region-bar-17" style="width:28.9%;height:20px;background:rgba(91,143,212,0.5);"></div>
+        </div>
+        <span class="region-pct" style="color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;">29.5% → 28.9% →</span>
+      </div>
+      <!-- Central: 22.0% → 21.8% -->
+      <div class="region-row">
+        <span class="region-name">Central</span>
+        <div class="region-track" style="height:20px;">
+          <div class="region-bar-14" style="width:22%;height:20px;"></div>
+          <div class="region-bar-17" style="width:21.8%;height:20px;background:rgba(91,143,212,0.5);"></div>
+        </div>
+        <span class="region-pct" style="color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;">22.0% → 21.8% →</span>
+      </div>
+      <!-- South: 18.0% → 15.2% -->
+      <div class="region-row">
+        <span class="region-name">South</span>
+        <div class="region-track" style="height:20px;">
+          <div class="region-bar-14" style="width:18%;height:20px;"></div>
+          <div class="region-bar-17" style="width:15.2%;height:20px;background:rgba(224,92,92,0.5);"></div>
+        </div>
+        <span class="region-pct" style="color:var(--red);font-family:'DM Mono',monospace;font-size:11px;">18.0% → 15.2% ↓</span>
+      </div>
+    </div>
+    <p class="chart-caption">West is the growth engine. South lost share, likely driven by the 2015 Technology volume collapse.</p>
+  </div>
+
+  <!-- CHART 3: SALES TREND + FORECAST -->
+  <p class="section-label">Sales trajectory — 2014 to 2018 forecast</p>
+  <div class="chart-wrap">
+    <p class="chart-title">Revenue trend</p>
+    <p class="chart-subtitle">Consistent growth — but margin hasn't kept pace with sales</p>
+    <div class="trend-wrap">
+      <svg class="trend-svg" viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#7eb8a4" stop-opacity="0.18"/>
+            <stop offset="100%" stop-color="#7eb8a4" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <!-- Gridlines -->
+        <line class="trend-gridline" x1="60" y1="20" x2="60" y2="180"/>
+        <line class="trend-gridline" x1="60" y1="180" x2="720" y2="180"/>
+        <line class="trend-gridline" x1="60" y1="60" x2="720" y2="60" stroke-dasharray="4 4"/>
+        <line class="trend-gridline" x1="60" y1="100" x2="720" y2="100" stroke-dasharray="4 4"/>
+        <line class="trend-gridline" x1="60" y1="140" x2="720" y2="140" stroke-dasharray="4 4"/>
+        <!-- Y labels -->
+        <text class="trend-year" x="50" y="24" text-anchor="end">$800K</text>
+        <text class="trend-year" x="50" y="64" text-anchor="end">$700K</text>
+        <text class="trend-year" x="50" y="104" text-anchor="end">$600K</text>
+        <text class="trend-year" x="50" y="144" text-anchor="end">$500K</text>
+        <text class="trend-year" x="50" y="184" text-anchor="end">$400K</text>
+        <!-- Area fill: actual data points -->
+        <!-- 2014: $484K → y=156, 2015: $471K → y=161, 2016: $609K → y=109, 2017: $733K → y=60 -->
+        <!-- x positions: 2014=120, 2015=270, 2016=420, 2017=570, 2018=720 -->
+        <path class="trend-area" d="M120,156 L270,161 L420,109 L570,60 L570,180 L420,180 L270,180 L120,180 Z"/>
+        <!-- Actual line -->
+        <polyline class="trend-line" points="120,156 270,161 420,109 570,60"/>
+        <!-- Forecast dashed line -->
+        <line class="trend-line-forecast" x1="570" y1="60" x2="720" y2="22"/>
+        <!-- Actual dots -->
+        <circle class="trend-dot" cx="120" cy="156" r="5"/>
+        <circle class="trend-dot" cx="270" cy="161" r="5"/>
+        <circle class="trend-dot" cx="420" cy="109" r="5"/>
+        <circle class="trend-dot" cx="570" cy="60" r="5"/>
+        <!-- Forecast dot -->
+        <circle class="trend-dot-forecast" cx="720" cy="22" r="5"/>
+        <!-- Value labels -->
+        <text class="trend-label" x="120" y="148" text-anchor="middle">$484K</text>
+        <text class="trend-label" x="270" y="153" text-anchor="middle">$471K</text>
+        <text class="trend-label" x="420" y="101" text-anchor="middle">$609K</text>
+        <text class="trend-label" x="570" y="52" text-anchor="middle">$733K</text>
+        <text style="font-family:'DM Mono',monospace;font-size:10px;fill:var(--amber);" x="720" y="14" text-anchor="middle">$796K*</text>
+        <!-- Year labels -->
+        <text class="trend-year" x="120" y="200" text-anchor="middle">2014</text>
+        <text class="trend-year" x="270" y="200" text-anchor="middle">2015</text>
+        <text class="trend-year" x="420" y="200" text-anchor="middle">2016</text>
+        <text class="trend-year" x="570" y="200" text-anchor="middle">2017</text>
+        <text style="font-family:'DM Mono',monospace;font-size:10px;fill:var(--amber);" x="720" y="200" text-anchor="middle">2018F</text>
+      </svg>
+    </div>
+    <p class="chart-caption">* 2018 forecast via linear regression. The 2015 dip is attributable to South region Technology collapse — not a structural trend.</p>
+  </div>
+
+  <!-- TOOLS USED -->
+  <p class="section-label">Tools & approach</p>
+  <div class="tools-strip">
+    <div class="tool-card">
+      <div class="tool-icon">🐍</div>
+      <p class="tool-name">Python</p>
+      <p class="tool-role">Data cleaning, aggregation, discount leakage analysis, linear regression forecast</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">📊</div>
+      <p class="tool-name">Power BI</p>
+      <p class="tool-role">Interactive dashboard with DAX measures, category drilldowns, year slicer</p>
+    </div>
+    <div class="tool-card">
+      <div class="tool-icon">📐</div>
+      <p class="tool-name">Excel</p>
+      <p class="tool-role">Pivot tables for regional share shift and sub-category margin mapping</p>
+    </div>
+  </div>
+
+
   <p class="section-label">Findings & recommendations</p>
   <div class="findings">
     <div class="finding critical">
@@ -329,17 +565,6 @@
         <p class="finding-rec">Investigate whether the collapse was structural or situational before drawing strategic conclusions about the South region.</p>
       </div>
     </div>
-  </div>
-
-  <!-- FORECAST -->
-  <p class="section-label">2018 sales forecast</p>
-  <div class="forecast">
-    <div class="bar-row"><span class="bar-year">2014</span><div class="bar-track"><div class="bar-fill actual" style="width:66%">$484K</div></div></div>
-    <div class="bar-row"><span class="bar-year">2015</span><div class="bar-track"><div class="bar-fill actual" style="width:64%">$471K</div></div></div>
-    <div class="bar-row"><span class="bar-year">2016</span><div class="bar-track"><div class="bar-fill actual" style="width:83%">$609K</div></div></div>
-    <div class="bar-row"><span class="bar-year">2017</span><div class="bar-track"><div class="bar-fill actual" style="width:100%">$733K</div></div></div>
-    <div class="bar-row"><span class="bar-year">2018</span><div class="bar-track"><div class="bar-fill forecast-bar" style="width:100%">$796K — linear regression forecast</div></div></div>
-    <p class="forecast-note">Assumes no repeat of South regional volatility and no material change in discount policy or product mix.</p>
   </div>
 
   <!-- METHODS -->
