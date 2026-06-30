@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Superstore Profitability Case — Tee Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--bg:#0C0C0C;--surface:#131313;--border:#1F1F1F;--text:#F0EBE3;--muted:#7A756D;--faint:#2A2520;--accent:#C8973A;--accent-lt:#E0B865;--danger:#C85A3A;--font:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;--ease:cubic-bezier(0.22,1,0.36,1);--radius:4px;}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;overflow-x:hidden;}
+    a{color:inherit;text-decoration:none;}
+    #pb{position:fixed;top:0;left:0;height:2px;width:0%;background:var(--accent);z-index:1000;transition:width .1s linear;}
+    .top-bar{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 56px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(12,12,12,0.94);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);}
+    .back{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);transition:color .2s;}
+    .back:hover{color:var(--accent);}
+    .back-arrow{transition:transform .2s;}
+    .back:hover .back-arrow{transform:translateX(-3px);}
+    .tb-title{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);}
+    .tb-num{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--muted);}
+    .hero{padding:130px 80px 80px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+    .hero-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:80px 80px;opacity:.25;mask-image:radial-gradient(ellipse 90% 80% at 15% 50%,black 20%,transparent 80%);}
+    .case-lbl{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+    .case-cat{font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:28px;}
+    .case-title{font-size:clamp(34px,5.5vw,76px);font-weight:900;letter-spacing:-.03em;line-height:1.05;max-width:920px;margin-bottom:44px;}
+    .meta{display:flex;gap:48px;flex-wrap:wrap;}
+    .mi .ml{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
+    .mi .mv{font-size:14px;color:var(--muted);}
+    .content{padding:0 56px 80px;}
+    .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:48px 0 0;}
+    .sc{background:var(--surface);padding:32px 28px;}
+    .sn{font-size:clamp(28px,3.5vw,46px);font-weight:900;letter-spacing:-.03em;line-height:1;margin-bottom:8px;}
+    .sn .a{color:var(--accent);}
+    .sn .d{color:var(--danger);}
+    .sl{font-size:13px;color:var(--muted);line-height:1.45;}
+    .cs{padding:72px 0;border-top:1px solid var(--border);}
+    .csl{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:18px;}
+    .csh{font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:20px;}
+    .csb{font-size:16px;color:var(--muted);line-height:1.8;max-width:720px;}
+    .csb strong{color:var(--text);}
+    .hyp{padding:26px 30px;border-left:3px solid var(--accent);background:var(--surface);border-radius:0 var(--radius) var(--radius) 0;max-width:720px;margin:14px auto 0;}
+    .hyp.rev{border-left-color:var(--accent-lt);}
+    .hyp-s{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .hyp-s.rev{color:var(--accent-lt);}
+    .hyp-t{font-size:15px;color:var(--text);line-height:1.7;}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;}
+    .steps{display:flex;flex-direction:column;gap:18px;margin-top:8px;}
+    .step{display:flex;gap:18px;}
+    .stn{font-size:11px;font-weight:700;color:var(--accent);min-width:26px;padding-top:2px;}
+    .stt{font-size:15px;color:var(--muted);line-height:1.65;}
+    .stt strong{color:var(--text);}
+    .finds{display:flex;flex-direction:column;gap:16px;margin-top:8px;}
+    .find{display:grid;grid-template-columns:12px 1fr;gap:14px;align-items:start;}
+    .fdot{width:8px;height:8px;border-radius:50%;margin-top:8px;}
+    .fdot.a{background:var(--accent);}
+    .fdot.d{background:var(--danger);}
+    .ft{font-size:15px;color:var(--muted);line-height:1.7;}
+    .ft strong{color:var(--text);}
+    .rg{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:32px;}
+    .rc{padding:26px 22px 52px;background:var(--surface);transition:background .25s;cursor:pointer;position:relative;}
+    
+    .rh{font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;}
+    .rt{font-size:16px;font-weight:700;margin-bottom:8px;line-height:1.3;}
+    .rb{font-size:13px;color:var(--muted);line-height:1.65;}
+    .chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:28px 28px 20px;}
+    .chart-title{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin-bottom:6px;}
+    .chart-sub{font-size:12px;color:var(--muted);margin-bottom:20px;}
+    .full-chart{width:100%;}
+    .discover{padding:80px 0 20px;border-top:1px solid var(--border);}
+    .disc-label{font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;}
+    .disc-heading{font-size:clamp(28px,4vw,48px);font-weight:900;letter-spacing:-.03em;margin-bottom:40px;}
+    .disc-cards{display:grid;grid-template-columns:1fr 1fr;gap:2px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+    .dc{background:var(--surface);padding:44px 40px;display:flex;flex-direction:column;position:relative;overflow:hidden;transition:background .3s var(--ease);}
+    .dc::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(200,151,58,.06) 0%,transparent 60%);opacity:0;transition:opacity .4s;}
+    .dc:hover{background:#181818;}
+    .dc:hover::before{opacity:1;}
+    .dc-num{font-size:64px;font-weight:900;color:var(--border);letter-spacing:-.04em;line-height:1;margin-bottom:24px;transition:color .3s;}
+    .dc:hover .dc-num{color:var(--faint);}
+    .dc-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:12px;}
+    .dc-title{font-size:20px;font-weight:800;line-height:1.2;margin-bottom:12px;}
+    .dc-desc{font-size:13px;color:var(--muted);line-height:1.7;flex:1;}
+    .dc-foot{margin-top:32px;display:flex;align-items:center;justify-content:space-between;}
+    .dc-tools{display:flex;gap:8px;flex-wrap:wrap;}
+    .ttag{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:4px 8px;border:1px solid var(--border);border-radius:2px;}
+    .dc-arrow{width:34px;height:34px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px;transition:border-color .2s,color .2s,background .2s,transform .2s;flex-shrink:0;}
+    .dc:hover .dc-arrow{border-color:var(--accent);color:var(--accent);background:rgba(200,151,58,.08);transform:translate(2px,-2px);}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s var(--ease),transform .65s var(--ease);}
+    .reveal.visible{opacity:1;transform:translateY(0);}
+    .d1{transition-delay:.1s;}.d2{transition-delay:.2s;}.d3{transition-delay:.3s;}
+    @media(max-width:900px){.top-bar{padding:0 24px;}.hero{padding:110px 24px 64px;}.content{padding:0 24px 60px;}.two{grid-template-columns:1fr;gap:40px;}.rg{grid-template-columns:1fr;gap:2px;}.stat-row{grid-template-columns:1fr 1fr;}.disc-cards{grid-template-columns:1fr;}.sidebar{display:none;}.page-layout{grid-template-columns:1fr;}}
+
+    /* Side Nav */
+    .page-layout{display:grid;grid-template-columns:220px 1fr;align-items:start;}
+    .sidebar{position:sticky;top:64px;height:calc(100vh - 64px);border-right:1px solid var(--border);padding:48px 24px;overflow-y:auto;}
+    .sb-label{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:24px;opacity:.5;}
+    .sb-nav{display:flex;flex-direction:column;gap:2px;}
+    .sb-item{font-size:13px;font-weight:500;color:var(--muted);padding:9px 12px;border-radius:3px;transition:color .15s,background .15s;display:block;line-height:1.3;}
+    .sb-item:hover{color:var(--text);background:rgba(255,255,255,.03);}
+    .sb-item.active{color:var(--accent);background:rgba(200,151,58,.07);font-weight:600;}
+    /* Rec Modal */
+    .rec-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s;}
+    .rec-overlay.open{opacity:1;pointer-events:all;}
+    .rec-modal{position:fixed;inset:0;z-index:901;display:flex;align-items:center;justify-content:center;padding:20px;pointer-events:none;}
+    .rec-box{background:#111213;border:1px solid #252525;border-radius:8px;width:100%;max-width:820px;max-height:90vh;overflow-y:auto;pointer-events:none;transform:translateY(36px) scale(.97);opacity:0;transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .28s;}
+    .rec-box.open{pointer-events:all;transform:translateY(0) scale(1);opacity:1;}
+    .rec-head{padding:24px 28px 20px;border-bottom:1px solid #1e1e1e;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;}
+    .rec-tag{font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:7px;}
+    .rec-title{font-size:19px;font-weight:800;line-height:1.25;margin:0;color:var(--text);}
+    .rec-close{background:none;border:1px solid #2a2a2a;border-radius:50%;width:28px;height:28px;color:#5A5550;font-size:17px;cursor:pointer;flex-shrink:0;transition:border-color .2s,color .2s;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;}
+    .rec-close:hover{border-color:var(--accent);color:var(--text);}
+    /* Card interactive */
+    
+    .rc-arrow{position:absolute;bottom:18px;right:18px;width:28px;height:28px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:12px;transition:border-color .2s,color .2s,transform .35s;}
+    .rc:hover .rc-arrow,.rc.active .rc-arrow{border-color:var(--accent);color:var(--accent);transform:rotate(45deg);}
+    .rc:hover{background:#161616;box-shadow:inset 0 0 0 1px rgba(200,151,58,.4);}
+    .rc.active{background:#161616;box-shadow:inset 0 0 0 1px rgba(200,151,58,.55);}
+  </style>
+</head>
+<body>
+<div id="pb"></div>
+<header class="top-bar">
+  <a href="index.html" class="back"><span class="back-arrow">←</span> Back to Portfolio</a>
+  <span class="tb-title">Retail · P&amp;L Analysis</span>
+  <span class="tb-num">[02 / 03]</span>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <p class="case-lbl">[02] Case Study</p>
+  <p class="case-cat">Retail · P&amp;L Analysis · Strategy · Forecasting</p>
+  <h1 class="case-title">Revenue Is Growing. Margins Are Not.</h1>
+  <div class="meta">
+    <div class="mi"><p class="ml">Dataset</p><p class="mv">Superstore · 4-year P&amp;L</p></div>
+    <div class="mi"><p class="ml">Tools</p><p class="mv">Python · Power BI · Regression</p></div>
+    <div class="mi"><p class="ml">Type</p><p class="mv">Profitability Analysis</p></div>
+    <div class="mi"><p class="ml">Outcome</p><p class="mv">Category restructuring plan</p></div>
+  </div>
+</section>
+
+<div class="page-layout">
+<aside class="sidebar">
+  <p class="sb-label">Navigation</p>
+  <nav class="sb-nav">
+    <a class="sb-item" href="#case-question">Case Question</a>
+    <a class="sb-item" href="#hypothesis">Hypothesis</a>
+    <a class="sb-item" href="#methodology">Methodology</a>
+    <a class="sb-item" href="#key-findings">Key Findings</a>
+    <a class="sb-item" href="#market-share">Market Share</a>
+    <a class="sb-item" href="#forecast">Forecast</a>
+    <a class="sb-item" href="#updated-hypothesis">Revised Hypothesis</a>
+    <a class="sb-item" href="#recommendations">Recommendations</a>
+  </nav>
+</aside>
+<div class="content">
+
+
+
+  <div class="cs reveal" id="case-question" style="padding-bottom:48px;">
+    <p class="csl">Case Question</p>
+    <h2 class="csh">Revenue is growing — so why are margins deteriorating year over year?</h2>
+    <p class="csb">The Superstore is posting consistent top-line growth across all regions. But profitability is trending in the wrong direction. The question is whether this is a <strong>category mix problem, a discounting problem, or both</strong> — and which levers actually move margin.</p>
+  </div>
+
+  <div class="cs reveal" id="hypothesis" style="padding-top:48px;border-top:1px solid var(--border);">
+    <p class="csl" style="text-align:center;">Initial Hypothesis</p>
+    <div class="hyp">
+      <p class="hyp-s">Hypothesis 1.0</p>
+      <p class="hyp-t">Margin compression is driven by aggressive discounting across all categories — a company-wide pricing discipline issue rather than category-specific performance.</p>
+    </div>
+  </div>
+
+  <div class="cs" id="methodology">
+    <div class="two">
+      <div class="reveal">
+        <p class="csl">Methodology</p>
+        <div class="steps">
+          <div class="step"><span class="stn">01</span><span class="stt"><strong>P&amp;L decomposition</strong> — broken revenue, cost, and profit down by category, sub-category, region, and year</span></div>
+          <div class="step"><span class="stn">02</span><span class="stt"><strong>Discount correlation analysis</strong> — plotted discount depth against margin at the order level to isolate causality</span></div>
+          <div class="step"><span class="stn">03</span><span class="stt"><strong>Category benchmarking</strong> — compared margin profiles across Technology, Office Supplies, and Furniture</span></div>
+          <div class="step"><span class="stn">04</span><span class="stt"><strong>2018 sales forecast</strong> — linear regression on 4-year trend, validated with seasonal decomposition</span></div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <p class="csl">Margin by Category — 2014 to 2017</p>
+        <div class="chart-wrap">
+          <p class="chart-title">Profit Margin by Category (4-Year Trend)</p>
+          <p class="chart-sub">Technology maintains positive margin · Furniture structurally negative</p>
+          <svg id="margin-chart" width="100%" style="display:block;"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs" id="key-findings">
+    <div class="two">
+      <div class="reveal">
+        <p class="csl">Key Findings</p>
+        <div style="background:#0f0e0a;border:1px solid #2a2010;border-left:3px solid var(--accent);border-radius:0 var(--radius) var(--radius) 0;padding:20px 24px;margin-bottom:26px;">
+          <p style="font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">Primary Finding</p>
+          <p style="font-size:clamp(16px,1.8vw,20px);font-weight:800;color:var(--text);line-height:1.3;margin-bottom:10px;">Furniture is structurally unprofitable — and growing it is making things worse.</p>
+          <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:0;">Tables at −8.6% margin on $200K+ revenue. The initial hypothesis was wrong — discounting amplifies the problem, but category-specific structural loss is the root cause.</p>
+        </div>
+        <div class="finds">
+          <div class="find"><div class="fdot d"></div><p class="ft"><strong>Discounting amplifies, doesn't cause it</strong> — orders above 30% discount average −12% margin. Furniture + high discount is the worst combination visible on the scatter.</p></div>
+          <div class="find"><div class="fdot a"></div><p class="ft"><strong>Technology is the margin anchor</strong> — 17–19% consistently. Copiers and Phones carry minimal discount pressure and are the only sub-categories worth scaling.</p></div>
+          <div class="find"><div class="fdot d"></div><p class="ft"><strong>Central region underperforms</strong> on profit despite comparable revenue — likely highest discount concentration outside Furniture.</p></div>
+          <div class="find"><div class="fdot a"></div><p class="ft"><strong>Office Supplies shows the recovery template</strong> — SKU rationalization in 2016–2017 lifted margin. Furniture needs the same treatment.</p></div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <p class="csl">Profit Margin vs Discount Rate</p>
+        <div class="chart-wrap">
+          <p class="chart-title">Sub-category Scatter — Margin vs Discount Depth</p>
+          <p class="chart-sub">Bubble size = revenue · Red zone = negative margin · Tables in danger zone</p>
+          <svg id="scatter-chart" width="100%" style="display:block;"></svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Regional Market Share -->
+  <div class="cs reveal" id="market-share" style="padding:64px 0;">
+    <p class="csl">Regional Market Share — 2014 vs 2017</p>
+    <div class="chart-wrap" style="max-width:860px;margin:0 auto;">
+      <p class="chart-title">Share Shift by Region</p>
+      <p class="chart-sub">West is the growth engine · South is quietly losing ground</p>
+      <svg id="share-chart" width="100%" style="display:block;"></svg>
+    </div>
+  </div>
+
+  <div class="cs reveal" id="forecast">
+    <p class="csl">Regional Sales Trend + 2018 Forecast</p>
+    <p class="csb" style="margin-bottom:24px;max-width:760px;">If current category mix and discount behavior hold constant, OLS regression on the 4-year trend projects West at <strong>$556K</strong> and Central at <strong>$188K</strong> — continuing to widen the regional gap. This forecast does <em>not</em> account for any Furniture restructuring; enacting the recommendation would shift the West figure upward and close the Central gap.</p>
+    <div class="chart-wrap full-chart">
+      <p class="chart-title">Annual Sales by Region (2014–2017) + 2018 Linear Forecast</p>
+      <p class="chart-sub">West leads · Central lags · Dashed = regression forecast · Shaded = forecast interval</p>
+      <svg id="trend-chart" width="100%" style="display:block;"></svg>
+    </div>
+    <!-- Forecast basis strip -->
+    <div style="display:flex;align-items:stretch;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-top:14px;">
+      <div style="flex:1;padding:14px 18px;border-right:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">OLS Linear Regression</div>
+        <div style="font-size:10px;color:var(--muted);">Fitted per region on 4-year annual sales trend</div>
+      </div>
+      <div style="flex:1;padding:14px 18px;border-right:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:700;color:var(--accent);margin-bottom:4px;">R² = 0.97 – 0.99</div>
+        <div style="font-size:10px;color:var(--muted);">Near-perfect fit on historical trend · West highest</div>
+      </div>
+      <div style="flex:1.4;padding:14px 18px;border-right:1px solid var(--border);">
+        <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;">Key Assumption</div>
+        <div style="font-size:10px;color:var(--muted);">Category mix and discount rates held constant at 2017 levels</div>
+      </div>
+      <div style="flex:1.4;padding:14px 18px;">
+        <div style="font-size:12px;font-weight:700;color:var(--danger);margin-bottom:4px;">Invalidated if</div>
+        <div style="font-size:10px;color:var(--muted);">Furniture restructuring is enacted — would improve margin but may compress revenue short-term</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cs reveal" id="updated-hypothesis">
+    <p class="csl" style="text-align:center;">Updated Hypothesis</p>
+    <div class="hyp rev">
+      <p class="hyp-s rev">↑ Hypothesis Revised</p>
+      <p class="hyp-t">Margin compression is <strong>category-specific, not company-wide</strong>. Furniture is structurally loss-making — and volume growth in that category is actively eroding total profitability. Discounting amplifies the problem but is not the root cause. The fix is category restructuring, not blanket pricing discipline.</p>
+    </div>
+  </div>
+
+  <div class="cs reveal" id="recommendations">
+    <p class="csl">Recommendations</p>
+    <div class="rg">
+      <div class="rc" data-rec="0" onclick="openRec(0)" style="padding-bottom:52px;">
+        <p class="rh">Immediate · Category</p>
+        <p class="rt">Furniture Restructuring</p>
+        <span class="rc-arrow">&#43;</span>
+      </div>
+      <div class="rc" data-rec="1" onclick="openRec(1)" style="padding-bottom:52px;">
+        <p class="rh">Pricing · Discount Policy</p>
+        <p class="rt">Discount Guardrails</p>
+        <span class="rc-arrow">&#43;</span>
+      </div>
+      <div class="rc" data-rec="2" onclick="openRec(2)" style="padding-bottom:52px;">
+        <p class="rh">Strategic · Growth</p>
+        <p class="rt">Double Down on Technology</p>
+        <span class="rc-arrow">&#43;</span>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Rec Modal -->
+<div class="rec-overlay" id="rec-overlay" onclick="closeRec()"></div>
+<div class="rec-modal" id="rec-modal">
+  <div class="rec-box" id="rec-box">
+    <div class="rec-head">
+      <div>
+        <p class="rec-tag" id="rec-tag"></p>
+        <p class="rec-title" id="rec-title"></p>
+      </div>
+      <button class="rec-close" onclick="closeRec()">&#215;</button>
+    </div>
+    <div id="rec-body-content"></div>
+  </div>
+</div>
+
+  <div class="discover reveal">
+    <p class="disc-label">Continue Exploring</p>
+    <h2 class="disc-heading">Discover More Projects</h2>
+    <div class="disc-cards">
+      <a href="olist.html" class="dc">
+        <div class="dc-num">01</div>
+        <p class="dc-tag">E-Commerce · Logistics · Brazil</p>
+        <h3 class="dc-title">Olist Fulfillment Analysis</h3>
+        <p class="dc-desc">Is Olist's fulfillment process breaking down — and where? A deep dive into 96K orders, late delivery mapping across 27 states, and a 3-horizon logistics restructuring strategy.</p>
+        <div class="dc-foot"><div class="dc-tools"><span class="ttag">Python</span><span class="ttag">pandas</span><span class="ttag">SQL</span></div><span class="dc-arrow">→</span></div>
+      </a>
+      <a href="stroke.html" class="dc">
+        <div class="dc-num">03</div>
+        <p class="dc-tag">Healthcare · Predictive Analytics · ML</p>
+        <h3 class="dc-title">Stroke Risk Prediction</h3>
+        <p class="dc-desc">Can we identify high-risk members before a stroke occurs? Machine learning on 319K CDC records — logistic regression vs. random forest, with a $52M intervention framework.</p>
+        <div class="dc-foot"><div class="dc-tools"><span class="ttag">Python</span><span class="ttag">sklearn</span><span class="ttag">ROC-AUC</span></div><span class="dc-arrow">→</span></div>
+      </a>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+const obs=new IntersectionObserver(e=>{e.forEach(x=>{if(x.isIntersecting)x.target.classList.add('visible');});},{threshold:.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+window.addEventListener('scroll',()=>{document.getElementById('pb').style.width=(window.scrollY/(document.documentElement.scrollHeight-window.innerHeight)*100)+'%';},{passive:true});
+const cObs=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting&&!entry.target.dataset.done){entry.target.dataset.done='1';const target=parseFloat(entry.target.dataset.count);const dec=parseInt(entry.target.dataset.dec??0);const dur=1400,t0=performance.now();const tick=now=>{const p=Math.min((now-t0)/dur,1);const v=(1-Math.pow(1-p,3))*target;entry.target.textContent=dec>0?v.toFixed(dec):Math.round(v).toLocaleString();if(p<1)requestAnimationFrame(tick);};requestAnimationFrame(tick);}});},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(el=>cObs.observe(el));
+
+// --- Chart 1: Margin by Category ---
+const marginData={
+  years:[2014,2015,2016,2017],
+  cats:[
+    {name:'Technology',color:'#C8973A',margins:[17.2,16.8,18.1,19.0]},
+    {name:'Office Supplies',color:'#6B8FA8',margins:[12.4,10.8,13.2,14.1]},
+    {name:'Furniture',color:'#C85A3A',margins:[2.1,-1.4,-3.8,-5.2]}
+  ]
+};
+
+function drawMargin(){
+  const svg=document.getElementById('margin-chart');
+  if(!svg)return;
+  const W=svg.parentElement.clientWidth-56;
+  if(W<=0)return;
+  const H=240,pad={top:24,left:44,right:16,bottom:40};
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('height',H);
+  const iW=W-pad.left-pad.right,iH=H-pad.top-pad.bottom;
+  const years=marginData.years;
+  const xS=i=>pad.left+(i/(years.length-1))*iW;
+  const minY=-8,maxY=22;
+  const yS=v=>pad.top+iH-((v-minY)/(maxY-minY))*iH;
+  let h='';
+  // grid
+  [-5,0,5,10,15,20].forEach(v=>{
+    const y=yS(v);
+    h+=`<line x1="${pad.left}" y1="${y}" x2="${pad.left+iW}" y2="${y}" stroke="${v===0?'#3A3530':'#1F1F1F'}" stroke-width="${v===0?1.5:1}"/>`;
+    h+=`<text x="${pad.left-6}" y="${y+4}" text-anchor="end" fill="#5A5550" font-size="9" font-family="Inter,sans-serif">${v}%</text>`;
+  });
+  // x axis labels
+  years.forEach((yr,i)=>{h+=`<text x="${xS(i)}" y="${H-pad.bottom+16}" text-anchor="middle" fill="#5A5550" font-size="10" font-family="Inter,sans-serif">${yr}</text>`;});
+  // 0 line label
+  h+=`<text x="${pad.left+4}" y="${yS(0)-4}" fill="#5A5550" font-size="8" font-family="Inter,sans-serif">Break-even</text>`;
+  // lines
+  marginData.cats.forEach(cat=>{
+    const pts=cat.margins.map((m,i)=>`${xS(i)},${yS(m)}`).join(' ');
+    h+=`<polyline class="cline" points="${pts}" fill="none" stroke="${cat.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" opacity="0" data-color="${cat.color}"/>`;
+    cat.margins.forEach((m,i)=>{
+      h+=`<circle cx="${xS(i)}" cy="${yS(m)}" r="4" fill="${cat.color}" opacity="0"/>`;
+      h+=`<text x="${xS(i)+(i===years.length-1?6:-4)}" y="${yS(m)+(m<0?14:-6)}" text-anchor="${i===years.length-1?'start':'middle'}" fill="${cat.color}" font-size="9" font-weight="700" font-family="Inter,sans-serif" opacity="0">${m>0?'+':''}${m}%</text>`;
+    });
+  });
+  // legend
+  let lx=pad.left;
+  marginData.cats.forEach(cat=>{
+    h+=`<line x1="${lx}" y1="${H-8}" x2="${lx+16}" y2="${H-8}" stroke="${cat.color}" stroke-width="2"/>`;
+    h+=`<text x="${lx+20}" y="${H-4}" fill="${cat.color}" font-size="9" font-weight="600" font-family="Inter,sans-serif">${cat.name}</text>`;
+    lx+=cat.name.length*6.2+30;
+  });
+  svg.innerHTML=h;
+  const lineObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        svg.querySelectorAll('polyline,circle,text[opacity="0"]').forEach((el,i)=>{
+          setTimeout(()=>{el.setAttribute('opacity',el.tagName==='polyline'?0.9:1);},i*25+100);
+        });
+        lineObs.disconnect();
+      }
+    });
+  },{threshold:.2});
+  lineObs.observe(svg);
+}
+
+// --- Chart 2: Regional Trend + Forecast ---
+const trendData={
+  years:[2014,2015,2016,2017],
+  forecast:2018,
+  regions:[
+    {name:'West',color:'#C8973A',sales:[252,310,380,468],fore:556},
+    {name:'East',color:'#6B8FA8',sales:[235,288,352,422],fore:500},
+    {name:'South',color:'#7A9A7A',sales:[118,142,171,208],fore:244},
+    {name:'Central',color:'#7A756D',sales:[145,158,162,178],fore:188}
+  ]
+};
+
+function drawTrend(){
+  const svg=document.getElementById('trend-chart');
+  if(!svg)return;
+  const W=svg.parentElement.clientWidth-56;
+  if(W<=0)return;
+  const H=280,pad={top:24,left:54,right:80,bottom:48};
+  svg.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  svg.setAttribute('height',H);
+  const iW=W-pad.left-pad.right,iH=H-pad.top-pad.bottom;
+  const allYrs=[...trendData.years,trendData.forecast];
+  const xS=i=>pad.left+(i/(allYrs.length-1))*iW;
+  const maxV=600;
+  const yS=v=>pad.top+iH-(v/maxV)*iH;
+  let h='';
+  // grid
+  [0,100,200,300,400,500,600].forEach(v=>{
+    const y=yS(v);
+    h+=`<line x1="${pad.left}" y1="${y}" x2="${pad.left+iW}" y2="${y}" stroke="#1F1F1F" stroke-width="1"/>`;
+    h+=`<text x="${pad.left-6}" y="${y+4}" text-anchor="end" fill="#5A5550" font-size="9" font-family="Inter,sans-serif">$${v}K</text>`;
+  });
+  // x labels
+  allYrs.forEach((yr,i)=>{
+    h+=`<text x="${xS(i)}" y="${H-pad.bottom+14}" text-anchor="middle" fill="${i===allYrs.length-1?'#C8973A':'#5A5550'}" font-size="${i===allYrs.length-1?10:10}" font-weight="${i===allYrs.length-1?700:400}" font-family="Inter,sans-serif">${yr}${i===allYrs.length-1?' ↗':''}</text>`;
+  });
+  // forecast divider
+  const fx=xS(trendData.years.length-1)+(xS(trendData.years.length)-xS(trendData.years.length-1))/2;
+  h+=`<line x1="${fx}" y1="${pad.top}" x2="${fx}" y2="${pad.top+iH}" stroke="#2A2520" stroke-width="1" stroke-dasharray="4,4"/>`;
+  h+=`<text x="${fx+4}" y="${pad.top+10}" fill="#4A4540" font-size="8" font-family="Inter,sans-serif" letter-spacing="0.08em">FORECAST →</text>`;
+  // lines
+  trendData.regions.forEach(reg=>{
+    const histPts=reg.sales.map((s,i)=>`${xS(i)},${yS(s)}`).join(' ');
+    const lastI=reg.sales.length-1;
+    const foreX=xS(lastI+1),histX=xS(lastI);
+    const foreY=yS(reg.fore),histY=yS(reg.sales[lastI]);
+    // confidence band
+    const bandW=12;
+    h+=`<polygon points="${histX},${histY} ${foreX},${foreY-bandW} ${foreX},${foreY+bandW}" fill="${reg.color}" opacity="0.08"/>`;
+    // historical line
+    h+=`<polyline class="tline" points="${histPts}" fill="none" stroke="${reg.color}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" opacity="0"/>`;
+    // forecast dashed
+    h+=`<line class="tline" x1="${histX}" y1="${histY}" x2="${foreX}" y2="${foreY}" stroke="${reg.color}" stroke-width="2" stroke-dasharray="5,3" opacity="0"/>`;
+    // dots
+    reg.sales.forEach((s,i)=>{h+=`<circle cx="${xS(i)}" cy="${yS(s)}" r="3.5" fill="${reg.color}" opacity="0"/>`;});
+    h+=`<circle cx="${foreX}" cy="${foreY}" r="5" fill="${reg.color}" opacity="0"/>`;
+    // end label
+    h+=`<text x="${foreX+9}" y="${foreY+4}" fill="${reg.color}" font-size="10" font-weight="700" font-family="Inter,sans-serif" opacity="0">${reg.name}</text>`;
+    h+=`<text x="${foreX+9}" y="${foreY+16}" fill="${reg.color}" font-size="9" font-family="Inter,sans-serif" opacity="0">$${reg.fore}K</text>`;
+  });
+  svg.innerHTML=h;
+  const tObs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        svg.querySelectorAll('.tline,circle[opacity="0"],text[opacity="0"]').forEach((el,i)=>{
+          setTimeout(()=>{el.setAttribute('opacity',el.tagName==='polyline'||el.tagName==='line'?0.9:1);},i*30+80);
+        });
+        tObs.disconnect();
+      }
+    });
+  },{threshold:.2});
+  tObs.observe(svg);
+}
+
+// --- Scatter: Margin vs Discount Rate ---
+var scatterData = [
+  {n:'Tables',      d:26, m:-8.6, r:207, col:'#C85A3A'},
+  {n:'Bookcases',   d:30, m:-3.0, r:148, col:'#C85A3A'},
+  {n:'Chairs',      d:20, m: 8.2, r:328, col:'#D07A5A'},
+  {n:'Furnishings', d:25, m: 4.8, r: 91, col:'#D07A5A'},
+  {n:'Binders',     d:37, m:14.9, r:203, col:'#6B8FA8'},
+  {n:'Storage',     d:15, m:10.4, r:223, col:'#6B8FA8'},
+  {n:'Paper',       d:14, m:20.1, r: 78, col:'#6B8FA8'},
+  {n:'Art',         d: 8, m:19.8, r: 27, col:'#6B8FA8'},
+  {n:'Phones',      d:14, m:18.2, r:330, col:'#C8973A'},
+  {n:'Copiers',     d:10, m:24.1, r:150, col:'#C8973A'},
+  {n:'Accessories', d:12, m:22.3, r:167, col:'#C8973A'},
+  {n:'Machines',    d:18, m: 7.1, r:189, col:'#C8973A'}
+];
+
+function drawScatter() {
+  var svg = document.getElementById('scatter-chart');
+  if (!svg) return;
+  var W = svg.parentElement.clientWidth - 56;
+  if (W <= 0) return;
+  var H=260, pad={top:24,left:50,right:96,bottom:44};
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.setAttribute('height',H);
+  var iW=W-pad.left-pad.right, iH=H-pad.top-pad.bottom;
+  var minD=0,maxD=45,minM=-12,maxM=28;
+  var xS=function(d){return pad.left+((d-minD)/(maxD-minD))*iW;};
+  var yS=function(m){return pad.top+iH-((m-minM)/(maxM-minM))*iH;};
+  var rS=function(r){return Math.sqrt(r)*0.55+3;};
+  var h='';
+  var dzX=xS(20),dzY=pad.top,dzW=xS(maxD)-xS(20),dzH=yS(0)-pad.top;
+  h+='<rect x="'+dzX+'" y="'+dzY+'" width="'+dzW+'" height="'+dzH+'" fill="rgba(200,90,58,.09)" rx="2"/>';
+  h+='<text x="'+(dzX+dzW-4)+'" y="'+(dzY+11)+'" text-anchor="end" fill="#5A2A20" font-size="8" font-family="Inter,sans-serif">Danger zone</text>';
+  var lzX=xS(30),lzY=yS(maxM),lzW=xS(maxD)-xS(30),lzH=yS(0)-lzY;
+  h+='<rect x="'+lzX+'" y="'+lzY+'" width="'+lzW+'" height="'+lzH+'" fill="rgba(200,151,58,.07)" rx="2"/>';
+  h+='<text x="'+(lzX+4)+'" y="'+(lzY+11)+'" fill="#3A2E10" font-size="8" font-family="Inter,sans-serif">Discount leakage</text>';
+  [-10,-5,0,5,10,15,20,25].forEach(function(v){
+    var y=yS(v);
+    h+='<line x1="'+pad.left+'" y1="'+y+'" x2="'+(pad.left+iW)+'" y2="'+y+'" stroke="'+(v===0?'#3A3530':'#1A1A1A')+'" stroke-width="'+(v===0?1.5:1)+'"/>';
+    h+='<text x="'+(pad.left-5)+'" y="'+(y+4)+'" text-anchor="end" fill="#5A5550" font-size="8.5" font-family="Inter,sans-serif">'+v+'%</text>';
+  });
+  [0,10,20,30,40].forEach(function(v){
+    h+='<text x="'+xS(v)+'" y="'+(H-pad.bottom+14)+'" text-anchor="middle" fill="#5A5550" font-size="8.5" font-family="Inter,sans-serif">'+v+'%</text>';
+  });
+  h+='<line x1="'+xS(20)+'" y1="'+pad.top+'" x2="'+xS(20)+'" y2="'+(pad.top+iH)+'" stroke="#2A2520" stroke-width="1" stroke-dasharray="4,3"/>';
+  h+='<text x="'+(pad.left+iW/2)+'" y="'+(H-2)+'" text-anchor="middle" fill="#4A4540" font-size="9" font-family="Inter,sans-serif">Discount Rate</text>';
+  var sorted=scatterData.slice().sort(function(a,b){return b.r-a.r;});
+  sorted.forEach(function(d){
+    var cx=xS(d.d),cy=yS(d.m),r=rS(d.r);
+    var hi=d.n==='Tables'||d.n==='Bookcases'||d.n==='Binders'||d.n==='Copiers'||d.n==='Phones';
+    h+='<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="'+d.col+'" opacity="'+(hi?0.88:0.45)+'"/>';
+    if(hi){
+      var lx=cx+r+4,ly=cy+4,anch='start';
+      if(d.n==='Tables'){lx=cx;ly=cy-r-5;anch='middle';}
+      if(d.n==='Bookcases'){lx=cx+r+4;ly=cy-2;}
+      if(d.n==='Binders'){lx=cx-r-3;ly=cy-6;anch='end';}
+      if(d.n==='Copiers'){lx=cx+r+4;ly=cy+4;}
+      h+='<text x="'+lx+'" y="'+ly+'" text-anchor="'+anch+'" fill="'+d.col+'" font-size="9" font-weight="700" font-family="Inter,sans-serif">'+d.n+'</text>';
+    }
+  });
+  var legs=[{col:'#C85A3A',lbl:'Furniture'},{col:'#6B8FA8',lbl:'Office Supplies'},{col:'#C8973A',lbl:'Technology'}];
+  var lx2=pad.left;
+  legs.forEach(function(l){
+    h+='<circle cx="'+(lx2+5)+'" cy="'+(H-pad.bottom/2+4)+'" r="5" fill="'+l.col+'" opacity="0.8"/>';
+    h+='<text x="'+(lx2+14)+'" y="'+(H-pad.bottom/2+8)+'" fill="'+l.col+'" font-size="9" font-weight="600" font-family="Inter,sans-serif">'+l.lbl+'</text>';
+    lx2+=l.lbl.length*6+22;
+  });
+  svg.innerHTML=h;
+}
+
+// --- Regional Share Dumbbell ---
+var shareData=[
+  {region:'West',    s14:30.5,s17:34.1,col:'#C8973A'},
+  {region:'East',    s14:29.5,s17:28.9,col:'#7A756D'},
+  {region:'Central', s14:22.0,s17:21.8,col:'#7A756D'},
+  {region:'South',   s14:18.0,s17:15.2,col:'#C85A3A'}
+];
+
+function drawShare() {
+  var svg=document.getElementById('share-chart');
+  if(!svg)return;
+  var W=svg.parentElement.clientWidth-56;
+  if(W<=0)return;
+  var H=200,pad={top:36,left:76,right:120,bottom:28};
+  svg.setAttribute('viewBox','0 0 '+W+' '+H);
+  svg.setAttribute('height',H);
+  var iW=W-pad.left-pad.right,iH=H-pad.top-pad.bottom;
+  var minX=12,maxX=38;
+  var xS=function(v){return pad.left+((v-minX)/(maxX-minX))*iW;};
+  var rowH=iH/shareData.length;
+  var h='';
+  [15,20,25,30,35].forEach(function(v){
+    var x=xS(v);
+    h+='<line x1="'+x+'" y1="'+pad.top+'" x2="'+x+'" y2="'+(pad.top+iH)+'" stroke="#1A1A1A" stroke-width="1"/>';
+    h+='<text x="'+x+'" y="'+(pad.top-9)+'" text-anchor="middle" fill="#4A4540" font-size="8.5" font-family="Inter,sans-serif">'+v+'%</text>';
+  });
+  h+='<circle cx="'+pad.left+'" cy="12" r="4" fill="#111213" stroke="#5A5550" stroke-width="1.5"/>';
+  h+='<text x="'+(pad.left+10)+'" y="16" fill="#5A5550" font-size="8.5" font-family="Inter,sans-serif">2014</text>';
+  h+='<circle cx="'+(pad.left+54)+'" cy="12" r="6" fill="#C8973A" opacity="0.85"/>';
+  h+='<text x="'+(pad.left+64)+'" y="16" fill="#7A756D" font-size="8.5" font-family="Inter,sans-serif">2017</text>';
+  shareData.forEach(function(d,i){
+    var cy=pad.top+(i+0.5)*rowH;
+    var x14=xS(d.s14),x17=xS(d.s17);
+    var delta=(d.s17-d.s14).toFixed(1);
+    var prefix=parseFloat(delta)>0?'+':'';
+    h+='<text x="'+(pad.left-10)+'" y="'+(cy+4)+'" text-anchor="end" fill="#9A9590" font-size="10.5" font-weight="600" font-family="Inter,sans-serif">'+d.region+'</text>';
+    h+='<line x1="'+Math.min(x14,x17)+'" y1="'+cy+'" x2="'+Math.max(x14,x17)+'" y2="'+cy+'" stroke="'+d.col+'" stroke-width="2" opacity="0.5"/>';
+    h+='<circle cx="'+x14+'" cy="'+cy+'" r="5" fill="#111213" stroke="'+d.col+'" stroke-width="1.5" opacity="0.7"/>';
+    h+='<text x="'+x14+'" y="'+(cy-9)+'" text-anchor="middle" fill="#5A5550" font-size="8" font-family="Inter,sans-serif">'+d.s14+'%</text>';
+    h+='<circle cx="'+x17+'" cy="'+cy+'" r="7" fill="'+d.col+'" opacity="0.9"/>';
+    h+='<text x="'+(pad.left+iW+10)+'" y="'+(cy+4)+'" fill="'+d.col+'" font-size="10" font-weight="700" font-family="Inter,sans-serif">'+d.s17+'% ('+prefix+delta+'pp)</text>';
+  });
+  svg.innerHTML=h;
+}
+
+window.addEventListener('load',()=>{drawMargin();drawTrend();drawScatter();drawShare();});
+window.addEventListener('resize',()=>{drawMargin();drawTrend();drawScatter();drawShare();});
+
+// ---- Recommendation Modal ----
+var SS_REC = [
+  { tag: 'Immediate · Category',    title: 'Furniture Restructuring',    render: renderFurniture },
+  { tag: 'Pricing · Discount Policy', title: 'Discount Guardrails',         render: renderDiscount  },
+  { tag: 'Strategic · Growth',      title: 'Double Down on Technology',  render: renderTech      }
+];
+
+function ss_hyp(text) {
+  return '<div style="padding:18px 28px 16px;border-bottom:1px solid #1e1e1e;"><p style="font-size:15px;font-weight:700;color:#F0EBE3;line-height:1.65;margin:0;border-left:2px solid #C8973A;padding-left:14px;">' + text + '</p></div>';
+}
+function ss_section(label, inner, note) {
+  var h = '<div style="padding:20px 28px;border-bottom:1px solid #1e1e1e;">';
+  h += '<p style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#3E3A36;margin:0 0 16px;">' + label + '</p>';
+  h += inner;
+  if (note) h += '<p style="font-size:10px;color:#3E3A36;text-align:center;margin:14px 0 0;font-style:italic;">' + note + '</p>';
+  h += '</div>';
+  return h;
+}
+function ss_scale(label, items) {
+  var h = '<div style="padding:18px 28px 20px;"><p style="font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#3E3A36;margin:0 0 14px;">' + label + '</p>';
+  h += '<div style="display:flex;align-items:stretch;border:1px solid #1e1e1e;border-radius:5px;overflow:hidden;">';
+  items.forEach(function(it, i) {
+    var bdr = i < items.length - 1 ? 'border-right:1px solid #1e1e1e;' : '';
+    var col = it.hi ? '#C8973A' : it.bad ? '#C85A3A' : '#F0EBE3';
+    h += '<div style="flex:1;padding:12px 14px;' + bdr + '">';
+    h += '<div style="font-size:15px;font-weight:800;color:' + col + ';letter-spacing:-.02em;">' + it.val + '</div>';
+    h += '<div style="font-size:9px;color:#4A4540;margin-top:3px;">' + it.lbl + '</div>';
+    h += '</div>';
+    if (it.sep) {
+      h += '<div style="display:flex;align-items:center;padding:0 8px;color:#2A2620;font-size:12px;border-right:1px solid #1e1e1e;">' + it.sep + '</div>';
+    }
+  });
+  h += '</div></div>';
+  return h;
+}
+function plCard(title, tcol, rows, note, bg, brd) {
+  var h = '<div style="background:' + bg + ';border:1px solid ' + brd + ';border-radius:6px;padding:16px 14px;">';
+  h += '<p style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:' + tcol + ';margin:0 0 12px;">' + title + '</p>';
+  rows.forEach(function(r) {
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid ' + brd + ';">';
+    h += '<span style="font-size:11px;color:#7A756D;">' + r[0] + '</span>';
+    h += '<span style="font-size:12px;font-weight:700;color:' + r[1] + ';">' + r[2] + '</span>';
+    h += '</div>';
+  });
+  if (note) h += '<p style="font-size:10px;color:' + tcol + ';opacity:.7;margin:10px 0 0;line-height:1.5;">' + note + '</p>';
+  h += '</div>';
+  return h;
+}
+
+function renderFurniture(el) {
+  var hyp = ss_hyp('"Tables is running at −8.6% margin on $200K+ revenue. Selling more of it doesn’t fix the unit economics — it amplifies the loss. The category needs restructuring before any growth conversation is had."');
+
+  var before = plCard('Today — Tables sub-category', '#C85A3A',
+    [['Revenue', '#F0EBE3', '$212K'], ['Cost of goods', '#C85A3A', '$230K'], ['Gross profit', '#C85A3A', '−$18K'], ['Margin', '#C85A3A', '−8.6%']],
+    'Every additional order in Tables makes the P&L worse.',
+    '#16080a', '#3a1515'
+  );
+  var after = plCard('After restructure — Tables exited', '#4aaa60',
+    [['Revenue impact', '#7A756D', '$0 (exit) or ↓ renegotiated'], ['Cost drag removed', '#4aaa60', '+$18K recovered'], ['Category margin', '#4aaa60', '−5.2% → −2.0%'], ['Net impact', '#4aaa60', '+3.2pp lift']],
+    'Removing the drag lifts total Furniture margin immediately.',
+    '#080f0a', '#153020'
+  );
+  var arr = '<div style="display:flex;align-items:center;justify-content:center;color:#2E2A26;font-size:20px;padding-top:44px;">→</div>';
+  var grid = '<div style="display:grid;grid-template-columns:1fr 32px 1fr;gap:8px;">' + before + arr + after + '</div>';
+  var moment = ss_section('What changes on the P&L', grid, 'Same category, same team. Remove the one sub-category that structurally cannot make money.');
+  var scale = ss_scale('The math at current run rate', [
+    {val:'−$18K', lbl:'annual loss removed', bad:true, sep:'→'},
+    {val:'+3.2pp',     lbl:'category margin lift', sep:'→'},
+    {val:'$0',         lbl:'cap-ex required', hi:true}
+  ]);
+  el.innerHTML = hyp + moment + scale;
+}
+
+function renderDiscount(el) {
+  var hyp = ss_hyp('"Above 20% discount, the average order loses money. There is no customer segment worth acquiring at −12% margin. A hard cap with P&L sign-off above 20% eliminates the worst-performing tail — without touching the profitable core."');
+
+  function step(label, sub, col, bg, brd, right) {
+    var h = '<div style="background:' + bg + ';border:1px solid ' + brd + ';border-radius:6px;padding:14px 16px;">';
+    h += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+    h += '<div><p style="font-size:11px;font-weight:700;color:' + col + ';margin:0 0 4px;">' + label + '</p>';
+    h += '<p style="font-size:10px;color:#5A5550;margin:0;">' + sub + '</p></div>';
+    if (right) h += '<span style="font-size:10px;font-weight:700;color:' + col + ';padding:3px 8px;border:1px solid ' + brd + ';border-radius:3px;">' + right + '</span>';
+    h += '</div></div>';
+    return h;
+  }
+  function flowArr(col) { return '<div style="text-align:center;padding:4px 0;color:' + col + ';font-size:14px;">↓</div>'; }
+
+  var before = '<div style="background:#13100a;border:1px solid #2a2010;border-radius:6px;padding:16px 14px;">'
+    + '<p style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8A7040;margin:0 0 12px;">Today — no guardrails</p>'
+    + step('Rep requests discount', 'Any amount, any category', '#7A756D', '#0d0b07', '#1e1a10')
+    + flowArr('#2a2010')
+    + step('Manager review', 'Optional, informal', '#7A756D', '#0d0b07', '#1e1a10')
+    + flowArr('#2a2010')
+    + step('Order approved', 'Even at 40% discount', '#C85A3A', '#160808', '#3a1515', '− margin')
+    + '</div>';
+
+  var after = '<div style="background:#080f0a;border:1px solid #153020;border-radius:6px;padding:16px 14px;">'
+    + '<p style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4aaa60;margin:0 0 12px;">With guardrails</p>'
+    + step('Rep requests discount', 'Any amount, any category', '#7A756D', '#050a06', '#0e1a10')
+    + flowArr('#153020')
+    + step('≤20% discount', 'Auto-approved', '#4aaa60', '#050a06', '#0e1a10', 'Approved ✓')
+    + flowArr('#153020')
+    + step('>20% discount', 'Requires P&L sign-off', '#C8973A', '#0a0a05', '#252010', 'Review')
+    + flowArr('#153020')
+    + step('>30% discount', 'Blocked unless CFO override', '#C85A3A', '#0a0505', '#1e1010', 'Blocked')
+    + '</div>';
+
+  var arr = '<div style="display:flex;align-items:center;justify-content:center;color:#2E2A26;font-size:20px;padding-top:60px;">→</div>';
+  var grid = '<div style="display:grid;grid-template-columns:1fr 32px 1fr;gap:8px;">' + before + arr + after + '</div>';
+  var moment = ss_section('What the approval process looks like', grid, 'Same team, same customers. Different rules for who can say yes.');
+  var scale = ss_scale('What this catches at current order volume', [
+    {val:'~15%',   lbl:'of orders above 20% discount', sep:'×'},
+    {val:'−12%',  lbl:'avg margin in that tail', bad:true, sep:'→'},
+    {val:'+1.8pp', lbl:'estimated margin recovery', hi:true}
+  ]);
+  el.innerHTML = hyp + moment + scale;
+}
+
+function renderTech(el) {
+  var hyp = ss_hyp('"Technology is the only category with 17–19% margin and zero structural discount pressure. The capital and attention freed from Furniture restructuring should go here — specifically Copiers (24%) and Phones (18%)."');
+
+  function catBar(name, margin, pct, col) {
+    var h = '<div style="margin-bottom:16px;">';
+    h += '<div style="display:flex;justify-content:space-between;margin-bottom:6px;">';
+    h += '<span style="font-size:11px;font-weight:600;color:#F0EBE3;">' + name + '</span>';
+    h += '<span style="font-size:11px;font-weight:700;color:' + col + ';">' + margin + '</span>';
+    h += '</div>';
+    h += '<div style="height:6px;background:#1a1a1a;border-radius:3px;">';
+    h += '<div style="height:6px;background:' + col + ';border-radius:3px;width:' + pct + '%;opacity:.85;"></div>';
+    h += '</div></div>';
+    return h;
+  }
+
+  var before = '<div style="background:#13100a;border:1px solid #2a2010;border-radius:6px;padding:16px 14px;">'
+    + '<p style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#8A7040;margin:0 0 16px;">Today — capital spread across all 3</p>'
+    + catBar('Technology', '17–19%', 85, '#C8973A')
+    + catBar('Office Supplies', '12–14%', 60, '#6B8FA8')
+    + catBar('Furniture', '−5.2%', 20, '#C85A3A')
+    + '<p style="font-size:10px;color:#6A5A40;margin:10px 0 0;line-height:1.5;">Furniture drag pulls total portfolio margin to 11%. Same sales energy across all three categories.</p>'
+    + '</div>';
+
+  var after = '<div style="background:#080f0a;border:1px solid #153020;border-radius:6px;padding:16px 14px;">'
+    + '<p style="font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#4aaa60;margin:0 0 16px;">After restructuring — capital concentrated</p>'
+    + catBar('Technology ↑ scaled', '17–19% → target 22%', 100, '#C8973A')
+    + catBar('Office Supplies', '12–14% maintained', 60, '#6B8FA8')
+    + catBar('Furniture', 'Restructured → −2%', 8, '#7A756D')
+    + '<p style="font-size:10px;color:#3A6A40;margin:10px 0 0;line-height:1.5;">Copiers (24%) and Phones (18%) are the lead SKUs. Technology becomes the portfolio anchor.</p>'
+    + '</div>';
+
+  var arr = '<div style="display:flex;align-items:center;justify-content:center;color:#2E2A26;font-size:20px;padding-top:60px;">→</div>';
+  var grid = '<div style="display:grid;grid-template-columns:1fr 32px 1fr;gap:8px;">' + before + arr + after + '</div>';
+  var moment = ss_section('Where the margin concentration moves', grid, 'Less spread, more depth. Profitability through focus.');
+  var scale = ss_scale('The Technology opportunity at scale', [
+    {val:'24%',    lbl:'Copiers margin', sep:'\xb7'},
+    {val:'18%',    lbl:'Phones margin', sep:'→'},
+    {val:'15%+',   lbl:'portfolio margin target', hi:true}
+  ]);
+  el.innerHTML = hyp + moment + scale;
+}
+
+function openRec(idx) {
+  var d = SS_REC[idx];
+  document.getElementById('rec-tag').textContent = d.tag;
+  document.getElementById('rec-title').textContent = d.title;
+  var bodyEl = document.getElementById('rec-body-content');
+  bodyEl.innerHTML = '';
+  d.render(bodyEl);
+  document.querySelectorAll('.rc').forEach(function(c){c.classList.remove('active');});
+  var card = document.querySelector('[data-rec="' + idx + '"]');
+  if (card) card.classList.add('active');
+  document.getElementById('rec-overlay').classList.add('open');
+  document.getElementById('rec-box').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeRec() {
+  document.getElementById('rec-overlay').classList.remove('open');
+  document.getElementById('rec-box').classList.remove('open');
+  document.body.style.overflow = '';
+  document.querySelectorAll('.rc').forEach(function(c){c.classList.remove('active');});
+}
+document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeRec(); });
+
+// ── Sidebar active state ─────────────────────────────────────────
+const sbSections=['case-question','hypothesis','methodology','key-findings','market-share','forecast','updated-hypothesis','recommendations'];
+const sbItems=document.querySelectorAll('.sb-item');
+window.addEventListener('scroll',function(){
+  var scrollY=window.scrollY+200;
+  var active=sbSections[0];
+  sbSections.forEach(function(id){var el=document.getElementById(id);if(el&&el.offsetTop<=scrollY)active=id;});
+  sbItems.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+active);});
+},{passive:true});
+
+</script>
+</body>
+</html>
