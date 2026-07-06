@@ -226,17 +226,7 @@
     }
     .about-body strong { color: var(--text); }
 
-    .skills {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
-    }
-    .skill {
-      padding: 10px 14px;
-      border: 1px solid var(--border); border-radius: var(--radius);
-      font-size: 12px; font-weight: 500; color: var(--muted);
-      letter-spacing: 0.03em;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .skill:hover { border-color: var(--accent); color: var(--text); }
+
 
     /* ── Projects section ── */
     #projects {
@@ -251,11 +241,7 @@
       font-size: clamp(44px, 6vw, 80px);
       font-weight: 900; letter-spacing: -0.035em; line-height: 1;
     }
-    .projects-count {
-      font-size: 100px; font-weight: 900;
-      color: var(--border); letter-spacing: -0.05em; line-height: 1;
-      user-select: none;
-    }
+
 
     /* ── 3 project cards ── */
     .project-cards {
@@ -273,42 +259,52 @@
       display: flex; flex-direction: column;
       position: relative; overflow: hidden;
       cursor: pointer;
-      transition: background 0.3s var(--ease);
-      min-height: 420px;
+      transition: background 0.4s var(--ease);
+      min-height: 460px;
+      text-decoration: none; color: inherit;
     }
-    .project-card::before {
-      content: '';
+    .card-bg {
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(200,151,58,0.06) 0%, transparent 60%);
+      opacity: 0.07;
+      transition: opacity 0.4s;
+    }
+    .project-card:hover .card-bg { opacity: 0.14; }
+    .card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(200,151,58,0.05) 0%, transparent 55%);
       opacity: 0; transition: opacity 0.4s;
     }
     .project-card:hover { background: #181818; }
-    .project-card:hover::before { opacity: 1; }
+    .project-card:hover .card-overlay { opacity: 1; }
     .card-num {
-      font-size: 80px; font-weight: 900;
+      font-size: 72px; font-weight: 900;
       color: var(--border); letter-spacing: -0.04em; line-height: 1;
-      margin-bottom: 32px;
+      margin-bottom: 140px;
       transition: color 0.3s;
+      position: relative; z-index: 1;
     }
-    .project-card:hover .card-num { color: var(--faint); }
+    .project-card:hover .card-num { color: #2A2520; }
     .card-tag {
       font-size: 10px; font-weight: 700;
       letter-spacing: 0.18em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 14px;
+      color: var(--accent); margin-bottom: 12px;
+      position: relative; z-index: 1;
     }
     .card-title {
-      font-size: 22px; font-weight: 800;
+      font-size: 21px; font-weight: 800;
       line-height: 1.2; letter-spacing: -0.01em;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       transition: color 0.2s;
+      position: relative; z-index: 1;
     }
     .card-desc {
       font-size: 13px; color: var(--muted); line-height: 1.7;
-      flex: 1;
+      flex: 1; position: relative; z-index: 1;
     }
     .card-footer {
-      margin-top: 40px;
+      margin-top: 36px;
       display: flex; align-items: center; justify-content: space-between;
+      position: relative; z-index: 1;
     }
     .card-tools {
       display: flex; gap: 8px; flex-wrap: wrap;
@@ -510,28 +506,38 @@
       <p class="about-body reveal d2">
         Away from the desk, I'm competitive in ways that tend to bleed into the work. Golf has taught me that discipline in process is the only path to consistent outcomes — you can't force the shot. I also play competitive FPS at a high level, which has sharpened the part of my brain that reads patterns fast and adapts under pressure. Both have made me a better analyst: patient in preparation, decisive in execution. I spend a lot of time outdoors, which is where I do most of my clearest thinking.
       </p>
-      <div class="skills reveal d3">
-        <span class="skill">Python · pandas · sklearn</span>
-        <span class="skill">Power BI · DAX</span>
-        <span class="skill">SQL · Data Modeling</span>
-        <span class="skill">Case Structuring · MECE</span>
-        <span class="skill">Data Storytelling</span>
-        <span class="skill">Excel · Financial Analysis</span>
-      </div>
+
     </div>
   </section>
 
   <!-- PROJECTS -->
   <section id="projects">
     <div class="projects-top">
-      <h2 class="projects-heading reveal">My<br>Work</h2>
-      <span class="projects-count reveal d1">03</span>
+      <h2 class="projects-heading reveal">My Work</h2>
     </div>
 
     <div class="project-cards">
 
-      <!-- Card 1 — Olist -->
+      <!-- Card 1 — Olist: Logistics network map art -->
       <a href="olist.html" class="project-card reveal">
+        <svg class="card-bg" viewBox="0 0 320 460" fill="none" preserveAspectRatio="xMidYMid slice">
+          <!-- Route nodes -->
+          <circle cx="60" cy="80" r="5" fill="#C8973A"/><circle cx="160" cy="50" r="4" fill="#C8973A"/><circle cx="260" cy="100" r="6" fill="#C8973A"/>
+          <circle cx="40" cy="200" r="4" fill="#C8973A"/><circle cx="140" cy="180" r="5" fill="#C8973A"/><circle cx="240" cy="220" r="4" fill="#C8973A"/>
+          <circle cx="80" cy="320" r="5" fill="#C8973A"/><circle cx="200" cy="300" r="4" fill="#C8973A"/><circle cx="290" cy="350" r="5" fill="#C8973A"/>
+          <circle cx="120" cy="420" r="4" fill="#C8973A"/><circle cx="220" cy="410" r="3" fill="#C8973A"/>
+          <!-- Route lines -->
+          <line x1="60" y1="80" x2="160" y2="50" stroke="#C8973A" stroke-width="1"/><line x1="160" y1="50" x2="260" y2="100" stroke="#C8973A" stroke-width="1"/>
+          <line x1="60" y1="80" x2="40" y2="200" stroke="#C8973A" stroke-width="1"/><line x1="260" y1="100" x2="240" y2="220" stroke="#C8973A" stroke-width="1"/>
+          <line x1="40" y1="200" x2="140" y2="180" stroke="#C8973A" stroke-width="1"/><line x1="140" y1="180" x2="240" y2="220" stroke="#C8973A" stroke-width="1"/>
+          <line x1="40" y1="200" x2="80" y2="320" stroke="#C8973A" stroke-width="1"/><line x1="140" y1="180" x2="200" y2="300" stroke="#C8973A" stroke-width="1"/>
+          <line x1="240" y1="220" x2="290" y2="350" stroke="#C8973A" stroke-width="1"/>
+          <line x1="80" y1="320" x2="200" y2="300" stroke="#C8973A" stroke-width="1"/><line x1="200" y1="300" x2="290" y2="350" stroke="#C8973A" stroke-width="1"/>
+          <line x1="80" y1="320" x2="120" y2="420" stroke="#C8973A" stroke-width="1"/><line x1="200" y1="300" x2="220" y2="410" stroke="#C8973A" stroke-width="1"/>
+          <!-- Moving package dots -->
+          <circle cx="110" cy="65" r="2.5" fill="#C8973A" opacity="0.5"/><circle cx="190" cy="140" r="2.5" fill="#C8973A" opacity="0.5"/><circle cx="90" cy="260" r="2.5" fill="#C8973A" opacity="0.5"/>
+        </svg>
+        <div class="card-overlay"></div>
         <div class="card-num">01</div>
         <p class="card-tag">E-Commerce · Operations · Logistics</p>
         <h3 class="card-title">Olist Fulfillment Breakdown</h3>
@@ -546,8 +552,29 @@
         </div>
       </a>
 
-      <!-- Card 2 — Superstore -->
+      <!-- Card 2 — Superstore: P&L bar chart art -->
       <a href="superstore.html" class="project-card reveal d1">
+        <svg class="card-bg" viewBox="0 0 320 460" fill="none" preserveAspectRatio="xMidYMid slice">
+          <!-- Bar chart columns -->
+          <rect x="30" y="320" width="32" height="100" rx="2" fill="#C8973A"/>
+          <rect x="80" y="270" width="32" height="150" rx="2" fill="#C8973A"/>
+          <rect x="130" y="240" width="32" height="180" rx="2" fill="#C8973A"/>
+          <rect x="180" y="290" width="32" height="130" rx="2" fill="#C8973A"/>
+          <rect x="230" y="200" width="32" height="220" rx="2" fill="#C8973A"/>
+          <rect x="280" y="250" width="32" height="170" rx="2" fill="#C8973A"/>
+          <!-- Trend line -->
+          <polyline points="46,310 96,255 146,225 196,275 246,185 296,235" stroke="#C8973A" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+          <!-- Data dots on trend -->
+          <circle cx="46" cy="310" r="3" fill="#C8973A"/><circle cx="96" cy="255" r="3" fill="#C8973A"/>
+          <circle cx="146" cy="225" r="3" fill="#C8973A"/><circle cx="196" cy="275" r="3" fill="#C8973A"/>
+          <circle cx="246" cy="185" r="3" fill="#C8973A"/><circle cx="296" cy="235" r="3" fill="#C8973A"/>
+          <!-- Grid lines -->
+          <line x1="20" y1="180" x2="320" y2="180" stroke="#C8973A" stroke-width="0.5" stroke-dasharray="3 4"/>
+          <line x1="20" y1="240" x2="320" y2="240" stroke="#C8973A" stroke-width="0.5" stroke-dasharray="3 4"/>
+          <line x1="20" y1="300" x2="320" y2="300" stroke="#C8973A" stroke-width="0.5" stroke-dasharray="3 4"/>
+          <line x1="20" y1="360" x2="320" y2="360" stroke="#C8973A" stroke-width="0.5" stroke-dasharray="3 4"/>
+        </svg>
+        <div class="card-overlay"></div>
         <div class="card-num">02</div>
         <p class="card-tag">Retail · P&amp;L Analysis · Strategy</p>
         <h3 class="card-title">Superstore Profitability Case</h3>
@@ -562,8 +589,39 @@
         </div>
       </a>
 
-      <!-- Card 3 — Stroke Risk -->
+      <!-- Card 3 — Stroke: Brain/neural network art -->
       <a href="stroke.html" class="project-card reveal d2">
+        <svg class="card-bg" viewBox="0 0 320 460" fill="none" preserveAspectRatio="xMidYMid slice">
+          <!-- Neural network nodes -->
+          <circle cx="160" cy="120" r="14" stroke="#C8973A" stroke-width="1.5" fill="none"/>
+          <circle cx="80" cy="220" r="10" stroke="#C8973A" stroke-width="1.5" fill="none"/>
+          <circle cx="240" cy="220" r="10" stroke="#C8973A" stroke-width="1.5" fill="none"/>
+          <circle cx="120" cy="310" r="8" stroke="#C8973A" stroke-width="1.5" fill="none"/>
+          <circle cx="200" cy="310" r="8" stroke="#C8973A" stroke-width="1.5" fill="none"/>
+          <circle cx="60" cy="380" r="6" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <circle cx="160" cy="390" r="6" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <circle cx="260" cy="380" r="6" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <circle cx="40" cy="120" r="6" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <circle cx="280" cy="130" r="6" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <circle cx="160" cy="50" r="5" stroke="#C8973A" stroke-width="1" fill="none"/>
+          <!-- Neural connections -->
+          <line x1="160" y1="106" x2="80" y2="210" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="160" y1="106" x2="240" y2="210" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="80" y1="230" x2="120" y2="302" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="80" y1="230" x2="200" y2="302" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="240" y1="230" x2="120" y2="302" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="240" y1="230" x2="200" y2="302" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="120" y1="318" x2="60" y2="374" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="120" y1="318" x2="160" y2="384" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="200" y1="318" x2="160" y2="384" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="200" y1="318" x2="260" y2="374" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="40" y1="120" x2="80" y2="210" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="280" y1="130" x2="240" y2="210" stroke="#C8973A" stroke-width="0.8"/>
+          <line x1="160" y1="55" x2="160" y2="106" stroke="#C8973A" stroke-width="0.8"/>
+          <!-- Center glow dot -->
+          <circle cx="160" cy="120" r="5" fill="#C8973A" opacity="0.6"/>
+        </svg>
+        <div class="card-overlay"></div>
         <div class="card-num">03</div>
         <p class="card-tag">Healthcare · Predictive Analytics · ML</p>
         <h3 class="card-title">Stroke Risk Prediction</h3>
@@ -598,7 +656,7 @@
         <a href="https://www.linkedin.com/in/thanhquangpham/" target="_blank" rel="noopener" class="contact-channel">
           LinkedIn<sup>li</sup>
         </a>
-        <a href="#" class="contact-channel">
+        <a href="https://github.com/ttotheetothee" target="_blank" rel="noopener" class="contact-channel">
           GitHub<sup>gh</sup>
         </a>
       </div>
@@ -606,7 +664,7 @@
       <div class="contact-links-right">
         <a href="mailto:teep1609@gmail.com" class="contact-link-sm">teep1609@gmail.com</a>
         <a href="https://www.linkedin.com/in/thanhquangpham/" target="_blank" rel="noopener" class="contact-link-sm">thanhquangpham</a>
-        <a href="#" class="contact-link-sm">add github handle</a>
+        <a href="https://github.com/ttotheetothee" target="_blank" rel="noopener" class="contact-link-sm">ttotheetothee</a>
         <div style="width:100%;height:1px;background:var(--border);margin:8px 0;"></div>
         <a href="Resume_Thanh_Pham.pdf" target="_blank" rel="noopener" class="contact-link-sm" style="color:var(--accent);">View Resume ↗</a>
         <a href="Resume_Thanh_Pham.pdf" download="Resume_Thanh_Pham.pdf" class="contact-link-sm">Download PDF ↓</a>
